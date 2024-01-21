@@ -1,0 +1,462 @@
+---
+title: "SR Notebook"
+output: html_notebook
+---
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(readxl)
+library(maps)
+```
+
+```{r}
+coalcoke_df <- read_csv("INT-Export-CoalCoke-09-09-2022_23-09-12.csv")
+coalcoke_col <- coalcoke_df$`Report generated on: 09-09-2022 23:09:12`
+```
+
+Tidying up the data
+```{r}
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+```
+
+```{r}
+#Production of Coal
+print("Production")
+World_Production <- str_split(coalcoke_col[3], ",")
+World_Unlist_Production <- World_Production[[1]]
+World_Production <- World_Unlist_Production[54:75]
+World_Production
+
+print("Production - Coal")
+World_Grab_Coal <- str_split(coalcoke_col[4], ",")
+World_Unlist_Coal <- World_Grab_Coal[[1]]
+World_Grab_Coal <- World_Unlist_Coal[54:75]
+World_Grab_Coal
+
+print("Production - Metallurgical coke")
+World_Grab_MetalCoal <- str_split(coalcoke_col[10], ",")
+World_Unlist_MetalCoal <- World_Grab_MetalCoal[[1]]
+World_Grab_MetalCoal <- World_Unlist_MetalCoal[54:75]
+World_Grab_MetalCoal
+
+print("Emissions -")
+World_Emissions <- str_split(coalcoke_col[37], ",")
+World_Unlist_Emissions <- World_Emissions[[1]]
+World_Emissions <- World_Unlist_Emissions[54:75]
+World_Emissions
+
+# Consumption of Worlds Coal
+print("Consumption")
+World_Consumption <- str_split(coalcoke_col[11], ",")
+World_Unlist_Consumption <- World_Consumption[[1]]
+World_Consumption <- World_Unlist_Consumption[54:75]
+World_Consumption
+
+print("Consumption - Coal ")
+World_Consumption_Coal <- str_split(coalcoke_col[12], ",")
+World_Unlist_Consumption_Coal <- World_Consumption_Coal[[1]]
+World_Consumption_Coal <- World_Unlist_Consumption_Coal[54:75]
+World_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+World_Consumption_MetalCoal <- str_split(coalcoke_col[18], ",")
+World_Unlist_Consumption_MetalCoal <- World_Consumption_MetalCoal[[1]]
+World_Consumption_MetalCoal <- World_Unlist_Consumption_MetalCoal[54:75]
+World_Consumption_MetalCoal
+
+World <- tibble(years = Years_3, production_coal = World_Grab_Coal, production_metallurgical_coke = World_Grab_MetalCoal, production = World_Production,emissions = World_Emissions, consumption_coal = World_Consumption_Coal, consumption_metallurgical_coke = World_Consumption_MetalCoal, consumption  = World_Consumption) 
+
+World$years <- as.integer(World$years)
+World$production_coal <- as.double(World$production_coal)
+World$production_metallurgical_coke <- as.double(World$production_metallurgical_coke)
+World$production <- as.double(World$production)
+World$emissions <- as.double(World$emissions)
+World$consumption_coal <- as.double(World$consumption_coal)
+World$consumption_metallurgical_coke <- as.double(World$consumption_metallurgical_coke)
+World$consumption <- as.double(World$consumption)
+
+World
+
+```
+```{r}
+# Canada's Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+#Production of Coal
+print("Production")
+Canada_Production <- str_split(coalcoke_col[1298], ",")
+Canada_Unlist_Production <- Canada_Production[[1]]
+Canada_Production <- Canada_Unlist_Production[54:75]
+Canada_Production
+
+print("Production - Coal")
+Canada_Grab_Coal <- str_split(coalcoke_col[1300], ",")
+Canada_Unlist_Coal <- Canada_Grab_Coal[[1]]
+Canada_Grab_Coal <- Canada_Unlist_Coal[54:75]
+Canada_Grab_Coal
+
+print("Production - Metallurgical coke")
+Canada_Grab_MetalCoal <- str_split(coalcoke_col[1306], ",")
+Canada_Unlist_MetalCoal <- Canada_Grab_MetalCoal[[1]]
+Canada_Grab_MetalCoal <- Canada_Unlist_MetalCoal[54:75]
+Canada_Grab_MetalCoal
+
+# Consumption of Worlds Coal
+print("Consumption")
+Canada_Consumption <- str_split(coalcoke_col[1307], ",")
+Canada_Unlist_Consumption <- Canada_Consumption[[1]]
+Canada_Consumption <- Canada_Unlist_Consumption[54:75]
+Canada_Consumption
+
+print("Consumption - Coal ")
+Canada_Consumption_Coal <- str_split(coalcoke_col[1308], ",")
+Canada_Unlist_Consumption_Coal <- Canada_Consumption_Coal[[1]]
+Canada_Consumption_Coal <- Canada_Unlist_Consumption_Coal[54:75]
+Canada_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+Canada_Consumption_MetalCoal <- str_split(coalcoke_col[1314], ",")
+Canada_Unlist_Consumption_MetalCoal <- Canada_Consumption_MetalCoal[[1]]
+Canada_Consumption_MetalCoal <- Canada_Unlist_Consumption_MetalCoal[54:75]
+Canada_Consumption_MetalCoal
+
+Canada <- tibble(years = Years_3, production_coal = Canada_Grab_Coal, production_metallurgical_coke = Canada_Grab_MetalCoal, production = Canada_Production, consumption_coal = Canada_Consumption_Coal, consumption_metallurgical_coke = Canada_Consumption_MetalCoal, consumption  = Canada_Consumption) 
+
+Canada$years <- as.integer(Canada$years)
+Canada$production_coal <- as.double(Canada$production_coal)
+Canada$production_metallurgical_coke <- as.double(Canada$production_metallurgical_coke)
+Canada$production <- as.double(Canada$production)
+Canada$consumption_coal <- as.double(Canada$consumption_coal)
+Canada$consumption_metallurgical_coke <- as.double(Canada$consumption_metallurgical_coke)
+Canada$consumption <- as.double(Canada$consumption)
+
+Canada
+```
+
+```{r}
+# USA's Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+#Production of Coal
+print("Production")
+USA_Production <- str_split(coalcoke_col[7923], ",")
+USA_Unlist_Production <- USA_Production[[1]]
+USA_Production <- USA_Unlist_Production[54:75]
+USA_Production
+
+print("Production - Coal")
+USA_Grab_Coal <- str_split(coalcoke_col[7924], ",")
+USA_Unlist_Coal <- USA_Grab_Coal[[1]]
+USA_Grab_Coal <- USA_Unlist_Coal[54:75]
+USA_Grab_Coal
+
+print("Production - Metallurgical coke")
+USA_Grab_MetalCoal <- str_split(coalcoke_col[7930], ",")
+USA_Unlist_MetalCoal <- USA_Grab_MetalCoal[[1]]
+USA_Grab_MetalCoal <- USA_Unlist_MetalCoal[54:75]
+USA_Grab_MetalCoal
+
+# Consumption of Coal
+print("Consumption")
+USA_Consumption <- str_split(coalcoke_col[7931], ",")
+USA_Unlist_Consumption <- USA_Consumption[[1]]
+USA_Consumption <- USA_Unlist_Consumption[54:75]
+USA_Consumption
+
+print("Consumption - Coal ")
+USA_Consumption_Coal <- str_split(coalcoke_col[7932], ",")
+USA_Unlist_Consumption_Coal <- USA_Consumption_Coal[[1]]
+USA_Consumption_Coal <- USA_Unlist_Consumption_Coal[54:75]
+USA_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+USA_Consumption_MetalCoal <- str_split(coalcoke_col[7938], ",")
+USA_Unlist_Consumption_MetalCoal <- USA_Consumption_MetalCoal[[1]]
+USA_Consumption_MetalCoal <- USA_Unlist_Consumption_MetalCoal[54:75]
+USA_Consumption_MetalCoal
+
+USA <- tibble(years = Years_3, production_coal = USA_Grab_Coal, production_metallurgical_coke = USA_Grab_MetalCoal, production = USA_Production, consumption_coal = USA_Consumption_Coal, consumption_metallurgical_coke = USA_Consumption_MetalCoal, consumption  = USA_Consumption) 
+
+USA$years <- as.integer(USA$years)
+USA$production_coal <- as.double(USA$production_coal)
+USA$production_metallurgical_coke <- as.double(USA$production_metallurgical_coke)
+USA$production <- as.double(USA$production)
+USA$consumption_coal <- as.double(USA$consumption_coal)
+USA$consumption_metallurgical_coke <- as.double(USA$consumption_metallurgical_coke)
+USA$consumption <- as.double(USA$consumption)
+
+USA
+```
+
+```{r}
+# China's Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+#Production of Coal
+print("Production")
+China_Production <- str_split(coalcoke_col[1479], ",")
+China_Unlist_Production <- China_Production[[1]]
+China_Production <- China_Unlist_Production[54:75]
+China_Production
+
+print("Production - Coal")
+China_Grab_Coal <- str_split(coalcoke_col[1480], ",")
+China_Unlist_Coal <- China_Grab_Coal[[1]]
+China_Grab_Coal <- China_Unlist_Coal[54:75]
+China_Grab_Coal
+
+print("Production - Metallurgical coke")
+China_Grab_MetalCoal <- str_split(coalcoke_col[1486], ",")
+China_Unlist_MetalCoal <- China_Grab_MetalCoal[[1]]
+China_Grab_MetalCoal <- China_Unlist_MetalCoal[54:75]
+China_Grab_MetalCoal
+
+# Consumption of Worlds Coal
+print("Consumption")
+China_Consumption <- str_split(coalcoke_col[1487], ",")
+China_Unlist_Consumption <- China_Consumption[[1]]
+China_Consumption <- China_Unlist_Consumption[54:75]
+China_Consumption
+
+print("Consumption - Coal ")
+China_Consumption_Coal <- str_split(coalcoke_col[1488], ",")
+China_Unlist_Consumption_Coal <- China_Consumption_Coal[[1]]
+China_Consumption_Coal <- China_Unlist_Consumption_Coal[54:75]
+China_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+China_Consumption_MetalCoal <- str_split(coalcoke_col[1494], ",")
+China_Unlist_Consumption_MetalCoal <- China_Consumption_MetalCoal[[1]]
+China_Consumption_MetalCoal <- China_Unlist_Consumption_MetalCoal[54:75]
+China_Consumption_MetalCoal
+
+China <- tibble(years = Years_3, production_coal = China_Grab_Coal, production_metallurgical_coke = China_Grab_MetalCoal, production = China_Production, consumption_coal = China_Consumption_Coal, consumption_metallurgical_coke = China_Consumption_MetalCoal, consumption  = China_Consumption) 
+
+China$years <- as.integer(China$years)
+China$production_coal <- as.double(China$production_coal)
+China$production_metallurgical_coke <- as.double(China$production_metallurgical_coke)
+China$production <- as.double(China$production)
+China$consumption_coal <- as.double(China$consumption_coal)
+China$consumption_metallurgical_coke <- as.double(China$consumption_metallurgical_coke)
+China$consumption <- as.double(China$consumption)
+
+China
+```
+
+```{r}
+# Germany's Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+Germany_Production <- str_split(coalcoke_col[2847], ",")
+Germany_Unlist_Production <- Germany_Production[[1]]
+Germany_Production <- Germany_Unlist_Production[54:75]
+Germany_Production
+
+print("Production - Coal")
+Germany_Grab_Coal <- str_split(coalcoke_col[2848], ",")
+Germany_Unlist_Coal <- Germany_Grab_Coal[[1]]
+Germany_Grab_Coal <- Germany_Unlist_Coal[54:75]
+Germany_Grab_Coal
+
+print("Production - Metallurgical coke")
+Germany_Grab_MetalCoal <- str_split(coalcoke_col[2854], ",")
+Germany_Unlist_MetalCoal <- Germany_Grab_MetalCoal[[1]]
+Germany_Grab_MetalCoal <- Germany_Unlist_MetalCoal[54:75]
+Germany_Grab_MetalCoal
+
+# Consumption of Coal
+print("Consumption")
+Germany_Consumption <- str_split(coalcoke_col[2855], ",")
+Germany_Unlist_Consumption <- Germany_Consumption[[1]]
+Germany_Consumption <- Germany_Unlist_Consumption[54:75]
+Germany_Consumption
+
+print("Consumption - Coal ")
+Germany_Consumption_Coal <- str_split(coalcoke_col[2856], ",")
+Germany_Unlist_Consumption_Coal <- Germany_Consumption_Coal[[1]]
+Germany_Consumption_Coal <- Germany_Unlist_Consumption_Coal[54:75]
+Germany_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+Germany_Consumption_MetalCoal <- str_split(coalcoke_col[2862], ",")
+Germany_Unlist_Consumption_MetalCoal <- Germany_Consumption_MetalCoal[[1]]
+Germany_Consumption_MetalCoal <- Germany_Unlist_Consumption_MetalCoal[54:75]
+Germany_Consumption_MetalCoal
+
+Germany <- tibble(years = Years_3, production_coal = Germany_Grab_Coal, production_metallurgical_coke = Germany_Grab_MetalCoal, production = Germany_Production, consumption_coal = Germany_Consumption_Coal, consumption_metallurgical_coke = Germany_Consumption_MetalCoal, consumption  = Germany_Consumption) 
+
+Germany$years <- as.integer(Germany$years)
+Germany$production_coal <- as.double(Germany$production_coal)
+Germany$production_metallurgical_coke <- as.double(Germany$production_metallurgical_coke)
+Germany$production <- as.double(Germany$production)
+Germany$consumption_coal <- as.double(Germany$consumption_coal)
+Germany$consumption_metallurgical_coke <- as.double(Germany$consumption_metallurgical_coke)
+Germany$consumption <- as.double(Germany$consumption)
+
+Germany
+```
+
+```{r}
+# Brazil's  Statistics
+
+# Coal Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+#Production of Coal
+print("Production")
+Brazil_Production <- str_split(coalcoke_col[939], ",")
+Brazil_Unlist_Production <- Brazil_Production[[1]]
+Brazil_Production <- Brazil_Unlist_Production[54:75]
+Brazil_Production
+
+print("Production - Coal")
+Brazil_Grab_Coal <- str_split(coalcoke_col[940], ",")
+Brazil_Unlist_Coal <- Brazil_Grab_Coal[[1]]
+Brazil_Grab_Coal <- Brazil_Unlist_Coal[54:75]
+Brazil_Grab_Coal
+
+print("Production - Metallurgical coke")
+Brazil_Grab_MetalCoal <- str_split(coalcoke_col[946], ",")
+Brazil_Unlist_MetalCoal <- Brazil_Grab_MetalCoal[[1]]
+Brazil_Grab_MetalCoal <- Brazil_Unlist_MetalCoal[54:75]
+Brazil_Grab_MetalCoal
+
+# Consumption of France's Coal
+print("Consumption")
+Brazil_Consumption <- str_split(coalcoke_col[947], ",")
+Brazil_Unlist_Consumption <- Brazil_Consumption[[1]]
+Brazil_Consumption <- Brazil_Unlist_Consumption[54:75]
+Brazil_Consumption
+
+print("Consumption - Coal ")
+Brazil_Consumption_Coal <- str_split(coalcoke_col[948], ",")
+Brazil_Unlist_Consumption_Coal <- Brazil_Consumption_Coal[[1]]
+Brazil_Consumption_Coal <- Brazil_Unlist_Consumption_Coal[54:75]
+Brazil_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+Brazil_Consumption_MetalCoal <- str_split(coalcoke_col[954], ",")
+Brazil_Unlist_Consumption_MetalCoal <- Brazil_Consumption_MetalCoal[[1]]
+Brazil_Consumption_MetalCoal <- Brazil_Unlist_Consumption_MetalCoal[54:75]
+Brazil_Consumption_MetalCoal
+
+Brazil <- tibble(years = Years_3, production_coal = Brazil_Grab_Coal, production_metallurgical_coke = Brazil_Grab_MetalCoal, production = Brazil_Production, consumption_coal = Brazil_Consumption_Coal, consumption_metallurgical_coke = Brazil_Consumption_MetalCoal, consumption  = Brazil_Consumption) 
+
+Brazil$years <- as.integer(Brazil$years)
+Brazil$production_coal <- as.double(Brazil$production_coal)
+Brazil$production_metallurgical_coke <- as.double(Brazil$production_metallurgical_coke)
+Brazil$production <- as.double(Brazil$production)
+Brazil$consumption_coal <- as.double(Brazil$consumption_coal)
+Brazil$consumption_metallurgical_coke <- as.double(Brazil$consumption_metallurgical_coke)
+Brazil$consumption <- as.double(Brazil$consumption)
+
+Brazil
+```
+
+```{r}
+# France's Coal Statistics
+
+# Retrieves Year Data
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+#Production of Coal
+print("Production")
+France_Production <- str_split(coalcoke_col[2631], ",")
+France_Unlist_Production <- France_Production[[1]]
+France_Production <- France_Unlist_Production[54:75]
+France_Production
+
+print("Production - Coal")
+France_Grab_Coal <- str_split(coalcoke_col[2632], ",")
+France_Unlist_Coal <- France_Grab_Coal[[1]]
+France_Grab_Coal <- France_Unlist_Coal[54:75]
+France_Grab_Coal
+
+print("Production - Metallurgical coke")
+France_Grab_MetalCoal <- str_split(coalcoke_col[2638], ",")
+France_Unlist_MetalCoal <- France_Grab_MetalCoal[[1]]
+France_Grab_MetalCoal <- France_Unlist_MetalCoal[54:75]
+France_Grab_MetalCoal
+
+# Consumption of France's Coal
+print("Consumption")
+France_Consumption <- str_split(coalcoke_col[2639], ",")
+France_Unlist_Consumption <- France_Consumption[[1]]
+France_Consumption <- France_Unlist_Consumption[54:75]
+France_Consumption
+
+print("Consumption - Coal ")
+France_Consumption_Coal <- str_split(coalcoke_col[2640], ",")
+France_Unlist_Consumption_Coal <- France_Consumption_Coal[[1]]
+France_Consumption_Coal <- France_Unlist_Consumption_Coal[54:75]
+France_Consumption_Coal
+
+print("Consumption - Metallurgical coke")
+France_Consumption_MetalCoal <- str_split(coalcoke_col[2646], ",")
+France_Unlist_Consumption_MetalCoal <- France_Consumption_MetalCoal[[1]]
+France_Consumption_MetalCoal <- France_Unlist_Consumption_MetalCoal[54:75]
+France_Consumption_MetalCoal
+
+France <- tibble(years = Years_3, production_coal = France_Grab_Coal, production_metallurgical_coke = France_Grab_MetalCoal, production = France_Production, consumption_coal = France_Consumption_Coal, consumption_metallurgical_coke = France_Consumption_MetalCoal, consumption  = France_Consumption) 
+
+France$years <- as.integer(France$years)
+France$production_coal <- as.double(France$production_coal)
+France$production_metallurgical_coke <- as.double(France$production_metallurgical_coke)
+France$production <- as.double(France$production)
+France$consumption_coal <- as.double(France$consumption_coal)
+France$consumption_metallurgical_coke <- as.double(France$consumption_metallurgical_coke)
+France$consumption <- as.double(France$consumption)
+
+France
+```
+```{r}
+graph_world <- ggplot() + geom_smooth(data=World, aes(x=years, y=emissions))
+graph_world
+```
+
+```{r}
+ggplot()+
+  geom_line(data=Canada, aes(x=years, y=production_coal,color="Canada"))+
+  geom_smooth(data=USA, aes(x=years, y=production_coal, color="USA"))+
+  geom_smooth(data=China, aes(x=years, y=production_coal, color="China"))+
+  geom_smooth(data=Brazil, aes(x=years, y=production_coal, color="Brazil"))+
+  geom_smooth(data=France, aes(x=years, y=production_coal, color="France"))+
+  geom_smooth(data=Germany, aes(x=years, y=production_coal, color="Germany"))+
+  ggtitle("Total Generation by Country")
+
+```
+
+
+
