@@ -1,0 +1,1690 @@
+---
+title: "Report"
+output:
+  pdf_document: default
+  html_document: default
+date: "2022-12-13"
+---
+
+```{r setup, include=FALSE, warning=FALSE,echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(readxl)
+library(maps)
+library(ggplot2)
+#install.packages("ggpubr")
+library("ggpubr")
+theme_set(
+  theme_bw() +
+    theme(legend.position = "top")
+  )
+```
+
+## Table of Contents
+
+-   Introduction
+-   Data Description
+-   Descriptive Statistics
+-   Conlusion
+
+## Introduction
+
+The current climate situation is one of increasing global warming, which is being caused by the emission of greenhouse gases into the atmosphere. These emissions are primarily the result of human activities, such as the burning of fossil fuels for energy and transportation, and deforestation. A potential effect of global warming is the melting of polar ice caps, which can cause sea levels to rise. This can lead to flooding in coastal areas and the displacement of people living in those areas. In addition, warmer temperatures can lead to more extreme weather events, such as heatwaves, droughts, and hurricanes.
+
+In the following report, we have carried out an analysis to see the how the increase of various factors have had a major contribution to climate change and global warming.
+
+## Data Description
+
+We have decided on using 6 data sets for this report which we think are the main contributors to the change in climate. The data sets are: Biofuel, Coal, Electricity, and Sea Ice, Natural Gas, Petro Liquids. These data sets have the following variables: Years, Production/Generation, Emission, Consumption, Sea Ice Index, and Sea Ice rates of change. Most of these variables are continuous except the Years variable which is categorical. Also, we have decided to take into consideration 6 of the countries provided in these data sets, which correspond to one of the largest contributors in each region of the world, and the last 21 years (2000-2021). The countries are: Canada, USA, China, Germany, Brazil, France. We have also included the general contribution of the world.
+
+## Descriptive Statistics
+
+### Biofuel
+
+```{r, echo=FALSE, warning=FALSE}
+#---
+#title: "Biofuel dataset"
+#author: "Ben Strain"
+#---
+# World's Biofuel Statistics
+data <- read_csv("INT-Export-BioFuel-09-09-2022_22-28-53.csv") 
+biofuel <- data$`Report generated on: 09-09-2022 22:28:53`
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of Worlds Biofuel
+World_Grab_Production <- str_split(biofuel[3], ",")
+World_Unlist_Production <- World_Grab_Production[[1]]
+World_Production <- World_Unlist_Production[23:42]
+
+World_Grab_pFuelEthanol <- str_split(biofuel[4], ",")
+World_Unlist_pFuelEthanol <- World_Grab_pFuelEthanol[[1]]
+World_p_FuelEthanol <- World_Unlist_pFuelEthanol[23:42]
+
+World_Grab_pBiomassBasedDiessel <- str_split(biofuel[5], ",")
+World_Unlist_pBiomassBasedDiessel <- World_Grab_pBiomassBasedDiessel[[1]]
+World_pBiomassBasedDiessel <- World_Unlist_pBiomassBasedDiessel[23:42]
+
+# Consumption of Worlds Biofuel
+World_Grab_Consuption <- str_split(biofuel[6], ",")
+World_Unlist_Consuption <- World_Grab_Consuption[[1]]
+World_Consuption <- World_Unlist_Consuption[23:42]
+
+
+World_Grab_cFuelEthanol <- str_split(biofuel[7], ",")
+World_Unlist_cFuelEthanol <- World_Grab_cFuelEthanol[[1]]
+World_c_FuelEthanol <- World_Unlist_cFuelEthanol[23:42]
+
+
+World_Grab_cBiomassBasedDiessel <- str_split(biofuel[8], ",")
+World_Unlist_cBiomassBasedDiessel <- World_Grab_cBiomassBasedDiessel[[1]]
+World_cBiomassBasedDiessel <- World_Unlist_cBiomassBasedDiessel[23:42]
+
+
+World <- tibble(years = Years_3, production_fuel_ethanol = World_p_FuelEthanol, production_biomass_based_diesel = World_pBiomassBasedDiessel, production = World_Production, consumption_fuel_ethanol = World_c_FuelEthanol, 
+                consumption_biomass_based_diesel = World_cBiomassBasedDiessel, consumption  = World_Consuption) 
+
+World$years <- as.integer(World$years)
+World$production_fuel_ethanol <- as.double(World$production_fuel_ethanol)
+World$production_biomass_based_diesel <- as.double(World$production_biomass_based_diesel)
+World$production <- as.double(World$production)
+World$consumption_fuel_ethanol <- as.double(World$consumption_fuel_ethanol)
+World$consumption_biomass_based_diesel <- as.double(World$consumption_biomass_based_diesel)
+World$consumption <- as.double(World$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Canada's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of Canada's Biofuel
+Canada_Grab_Production <- str_split(biofuel[255], ",")
+Canada_Unlist_Production <- Canada_Grab_Production[[1]]
+Canada_Production <- Canada_Unlist_Production[23:42]
+
+
+Canada_Grab_pFuelEthanol <- str_split(biofuel[256], ",")
+Canada_Unlist_pFuelEthanol <- Canada_Grab_pFuelEthanol[[1]]
+Canada_p_FuelEthanol <- Canada_Unlist_pFuelEthanol[23:42]
+
+Canada_Grab_pBiomassBasedDiessel <- str_split(biofuel[257], ",")
+Canada_Unlist_pBiomassBasedDiessel <- Canada_Grab_pBiomassBasedDiessel[[1]]
+Canada_pBiomassBasedDiessel <- Canada_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of Canada's Biofuel
+Canada_Grab_Consuption <- str_split(biofuel[258], ",")
+Canada_Unlist_Consuption <- Canada_Grab_Consuption[[1]]
+Canada_Consuption <- Canada_Unlist_Consuption[23:42]
+
+Canada_Grab_cFuelEthanol <- str_split(biofuel[259], ",")
+Canada_Unlist_cFuelEthanol <- Canada_Grab_cFuelEthanol[[1]]
+Canada_c_FuelEthanol <- Canada_Unlist_cFuelEthanol[23:42]
+
+Canada_Grab_cBiomassBasedDiessel <- str_split(biofuel[260], ",")
+Canada_Unlist_cBiomassBasedDiessel <- Canada_Grab_cBiomassBasedDiessel[[1]]
+Canada_cBiomassBasedDiessel <- Canada_Unlist_cBiomassBasedDiessel[23:42]
+
+
+Canada <- tibble(years = Years_3, production_fuel_ethanol = Canada_p_FuelEthanol, production_biomass_based_diesel = Canada_pBiomassBasedDiessel, production = Canada_Production, consumption_fuel_ethanol = Canada_c_FuelEthanol, 
+                consumption_biomass_based_diesel = Canada_cBiomassBasedDiessel, consumption  = Canada_Consuption) 
+
+Canada$years <- as.integer(Canada$years)
+Canada$production_fuel_ethanol <- as.double(Canada$production_fuel_ethanol)
+Canada$production_biomass_based_diesel <- as.double(Canada$production_biomass_based_diesel)
+Canada$production <- as.double(Canada$production)
+Canada$consumption_fuel_ethanol <- as.double(Canada$consumption_fuel_ethanol)
+Canada$consumption_biomass_based_diesel <- as.double(Canada$consumption_biomass_based_diesel)
+Canada$consumption <- as.double(Canada$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# USA's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of USA's Biofuel
+USA_Grab_Production <- str_split(biofuel[1543], ",")
+USA_Unlist_Production <- USA_Grab_Production[[1]]
+USA_Production <- USA_Unlist_Production[23:42]
+
+USA_Grab_pFuelEthanol <- str_split(biofuel[1544], ",")
+USA_Unlist_pFuelEthanol <- USA_Grab_pFuelEthanol[[1]]
+USA_p_FuelEthanol <- USA_Unlist_pFuelEthanol[23:42]
+
+USA_Grab_pBiomassBasedDiessel <- str_split(biofuel[1545], ",")
+USA_Unlist_pBiomassBasedDiessel <- USA_Grab_pBiomassBasedDiessel[[1]]
+USA_pBiomassBasedDiessel <- USA_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of USA's Biofuel
+USA_Grab_Consuption <- str_split(biofuel[1546], ",")
+USA_Unlist_Consuption <- USA_Grab_Consuption[[1]]
+USA_Consuption <- USA_Unlist_Consuption[23:42]
+
+USA_Grab_cFuelEthanol <- str_split(biofuel[1547], ",")
+USA_Unlist_cFuelEthanol <- USA_Grab_cFuelEthanol[[1]]
+USA_c_FuelEthanol <- USA_Unlist_cFuelEthanol[23:42]
+
+
+USA_Grab_cBiomassBasedDiessel <- str_split(biofuel[1548], ",")
+USA_Unlist_cBiomassBasedDiessel <- USA_Grab_cBiomassBasedDiessel[[1]]
+USA_cBiomassBasedDiessel <- USA_Unlist_cBiomassBasedDiessel[23:42]
+
+
+USA <- tibble(years = Years_3, production_fuel_ethanol = USA_p_FuelEthanol, production_biomass_based_diesel = USA_pBiomassBasedDiessel, production = USA_Production, consumption_fuel_ethanol = USA_c_FuelEthanol, 
+                consumption_biomass_based_diesel = USA_cBiomassBasedDiessel, consumption  = USA_Consuption) 
+
+USA$years <- as.integer(USA$years)
+USA$production_fuel_ethanol <- as.double(USA$production_fuel_ethanol)
+USA$production_biomass_based_diesel <- as.double(USA$production_biomass_based_diesel)
+USA$production <- as.double(USA$production)
+USA$consumption_fuel_ethanol <- as.double(USA$consumption_fuel_ethanol)
+USA$consumption_biomass_based_diesel <- as.double(USA$consumption_biomass_based_diesel)
+USA$consumption <- as.double(USA$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# China's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of China's Biofuel
+China_Grab_Production <- str_split(biofuel[290], ",")
+China_Unlist_Production <- China_Grab_Production[[1]]
+China_Production <- China_Unlist_Production[23:42]
+
+China_Grab_pFuelEthanol <- str_split(biofuel[291], ",")
+China_Unlist_pFuelEthanol <- China_Grab_pFuelEthanol[[1]]
+China_p_FuelEthanol <- China_Unlist_pFuelEthanol[23:42]
+
+China_Grab_pBiomassBasedDiessel <- str_split(biofuel[292], ",")
+China_Unlist_pBiomassBasedDiessel <- China_Grab_pBiomassBasedDiessel[[1]]
+China_pBiomassBasedDiessel <- China_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of China's Biofuel
+China_Grab_Consuption <- str_split(biofuel[293], ",")
+China_Unlist_Consuption <- China_Grab_Consuption[[1]]
+China_Consuption <- China_Unlist_Consuption[23:42]
+
+China_Grab_cFuelEthanol <- str_split(biofuel[294], ",")
+China_Unlist_cFuelEthanol <- China_Grab_cFuelEthanol[[1]]
+China_c_FuelEthanol <- China_Unlist_cFuelEthanol[23:42]
+
+China_Grab_cBiomassBasedDiessel <- str_split(biofuel[295], ",")
+China_Unlist_cBiomassBasedDiessel <- China_Grab_cBiomassBasedDiessel[[1]]
+China_cBiomassBasedDiessel <- China_Unlist_cBiomassBasedDiessel[23:42]
+
+
+China <- tibble(years = Years_3, production_fuel_ethanol = China_p_FuelEthanol, production_biomass_based_diesel = China_pBiomassBasedDiessel, production = China_Production, consumption_fuel_ethanol = China_c_FuelEthanol, 
+                consumption_biomass_based_diesel = China_cBiomassBasedDiessel, consumption = China_Consuption)
+
+China$years <- as.integer(China$years)
+China$production_fuel_ethanol <- as.double(China$production_fuel_ethanol)
+China$production_biomass_based_diesel <- as.double(China$production_biomass_based_diesel)
+China$production <- as.double(China$production)
+China$consumption_fuel_ethanol <- as.double(China$consumption_fuel_ethanol)
+China$consumption_biomass_based_diesel <- as.double(China$consumption_biomass_based_diesel)
+China$consumption <- as.double(China$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Germany's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of Germany's Biofuel
+Germany_Grab_Production <- str_split(biofuel[556], ",")
+Germany_Unlist_Production <- Germany_Grab_Production[[1]]
+Germany_Production <- Germany_Unlist_Production[23:42]
+
+Germany_Grab_pFuelEthanol <- str_split(biofuel[557], ",")
+Germany_Unlist_pFuelEthanol <- Germany_Grab_pFuelEthanol[[1]]
+Germany_p_FuelEthanol <- Germany_Unlist_pFuelEthanol[23:42]
+
+
+Germany_Grab_pBiomassBasedDiessel <- str_split(biofuel[558], ",")
+Germany_Unlist_pBiomassBasedDiessel <- Germany_Grab_pBiomassBasedDiessel[[1]]
+Germany_pBiomassBasedDiessel <- Germany_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of Germany's Biofuel
+Germany_Grab_Consuption <- str_split(biofuel[559], ",")
+Germany_Unlist_Consuption <- Germany_Grab_Consuption[[1]]
+Germany_Consuption <- Germany_Unlist_Consuption[23:42]
+
+Germany_Grab_cFuelEthanol <- str_split(biofuel[560], ",")
+Germany_Unlist_cFuelEthanol <- Germany_Grab_cFuelEthanol[[1]]
+Germany_c_FuelEthanol <- Germany_Unlist_cFuelEthanol[23:42]
+
+Germany_Grab_cBiomassBasedDiessel <- str_split(biofuel[561], ",")
+Germany_Unlist_cBiomassBasedDiessel <- Germany_Grab_cBiomassBasedDiessel[[1]]
+Germany_cBiomassBasedDiessel <- Germany_Unlist_cBiomassBasedDiessel[23:42]
+
+
+Germany <- tibble(years = Years_3, production_fuel_ethanol = Germany_p_FuelEthanol, production_biomass_based_diesel = Germany_pBiomassBasedDiessel, production = Germany_Production, consumption_fuel_ethanol = Germany_c_FuelEthanol, 
+                consumption_biomass_based_diesel = Germany_cBiomassBasedDiessel, consumption = Germany_Consuption) 
+
+Germany$years <- as.integer(Germany$years)
+Germany$production_fuel_ethanol <- as.double(Germany$production_fuel_ethanol)
+Germany$production_biomass_based_diesel <- as.double(Germany$production_biomass_based_diesel)
+Germany$production <- as.double(Germany$production)
+Germany$consumption_fuel_ethanol <- as.double(Germany$consumption_fuel_ethanol)
+Germany$consumption_biomass_based_diesel <- as.double(Germany$consumption_biomass_based_diesel)
+Germany$consumption <- as.double(Germany$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Brazil's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of Brazil's Biofuel
+Brazil_Grab_Production <- str_split(biofuel[185], ",")
+Brazil_Unlist_Production <- Brazil_Grab_Production[[1]]
+Brazil_Production <- Brazil_Unlist_Production[23:42]
+
+Brazil_Grab_pFuelEthanol <- str_split(biofuel[186], ",")
+Brazil_Unlist_pFuelEthanol <- Brazil_Grab_pFuelEthanol[[1]]
+Brazil_p_FuelEthanol <- Brazil_Unlist_pFuelEthanol[23:42]
+
+Brazil_Grab_pBiomassBasedDiessel <- str_split(biofuel[187], ",")
+Brazil_Unlist_pBiomassBasedDiessel <- Brazil_Grab_pBiomassBasedDiessel[[1]]
+Brazil_pBiomassBasedDiessel <- Brazil_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of Brazil's Biofuel
+Brazil_Grab_Consuption <- str_split(biofuel[188], ",")
+Brazil_Unlist_Consuption <- Brazil_Grab_Consuption[[1]]
+Brazil_Consuption <- Brazil_Unlist_Consuption[23:42]
+
+Brazil_Grab_cFuelEthanol <- str_split(biofuel[189], ",")
+Brazil_Unlist_cFuelEthanol <- Brazil_Grab_cFuelEthanol[[1]]
+Brazil_c_FuelEthanol <- Brazil_Unlist_cFuelEthanol[23:42]
+
+Brazil_Grab_cBiomassBasedDiessel <- str_split(biofuel[190], ",")
+Brazil_Unlist_cBiomassBasedDiessel <- Brazil_Grab_cBiomassBasedDiessel[[1]]
+Brazil_cBiomassBasedDiessel <- Brazil_Unlist_cBiomassBasedDiessel[23:42]
+
+
+Brazil <- tibble(years = Years_3, production_fuel_ethanol = Brazil_p_FuelEthanol, production_biomass_based_diesel = Brazil_pBiomassBasedDiessel, production = Brazil_Production, consumption_fuel_ethanol = Brazil_c_FuelEthanol, 
+                consumption_biomass_based_diesel = Brazil_cBiomassBasedDiessel, consumption = Brazil_Consuption) 
+
+Brazil$years <- as.integer(Brazil$years)
+Brazil$production_fuel_ethanol <- as.double(Brazil$production_fuel_ethanol)
+Brazil$production_biomass_based_diesel <- as.double(Brazil$production_biomass_based_diesel)
+Brazil$production <- as.double(Brazil$production)
+Brazil$consumption_fuel_ethanol <- as.double(Brazil$consumption_fuel_ethanol)
+Brazil$consumption_biomass_based_diesel <- as.double(Brazil$consumption_biomass_based_diesel)
+Brazil$consumption <- as.double(Brazil$consumption)
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# France's Biofuel Statistics
+
+# Retrieves Year Data
+Years <- str_split(biofuel[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:42]
+
+# Production of France's Biofuel
+France_Grab_Production <- str_split(biofuel[514], ",")
+France_Unlist_Production <- France_Grab_Production[[1]]
+France_Production <- France_Unlist_Production[23:42]
+
+
+#Production - Fuel Ethanol
+France_Grab_pFuelEthanol <- str_split(biofuel[515], ",")
+France_Unlist_pFuelEthanol <- France_Grab_pFuelEthanol[[1]]
+France_p_FuelEthanol <- France_Unlist_pFuelEthanol[23:42]
+
+
+#Production - Biomass Based Diessel
+France_Grab_pBiomassBasedDiessel <- str_split(biofuel[516], ",")
+France_Unlist_pBiomassBasedDiessel <- France_Grab_pBiomassBasedDiessel[[1]]
+France_pBiomassBasedDiessel <- France_Unlist_pBiomassBasedDiessel[23:42]
+
+
+# Consumption of France's Biofuel
+France_Grab_Consuption <- str_split(biofuel[517], ",")
+France_Unlist_Consuption <- France_Grab_Consuption[[1]]
+France_Consuption <- France_Unlist_Consuption[23:42]
+
+
+#Consumption - Fuel Ethanol
+France_Grab_cFuelEthanol <- str_split(biofuel[518], ",")
+France_Unlist_cFuelEthanol <- France_Grab_cFuelEthanol[[1]]
+France_c_FuelEthanol <- France_Unlist_cFuelEthanol[23:42]
+
+
+#Consumption - Biomass Based Diessel
+France_Grab_cBiomassBasedDiessel <- str_split(biofuel[519], ",")
+France_Unlist_cBiomassBasedDiessel <- France_Grab_cBiomassBasedDiessel[[1]]
+France_cBiomassBasedDiessel <- France_Unlist_cBiomassBasedDiessel[23:42]
+
+
+France <- tibble(years = Years_3, production_fuel_ethanol = France_p_FuelEthanol, production_biomass_based_diesel = France_pBiomassBasedDiessel, production = France_Production, consumption_fuel_ethanol = France_c_FuelEthanol, 
+                consumption_biomass_based_diesel = France_cBiomassBasedDiessel, consumption = France_Consuption) 
+
+France$years <- as.integer(Brazil$years)
+France$production_fuel_ethanol <- as.double(Brazil$production_fuel_ethanol)
+France$production_biomass_based_diesel <- as.double(Brazil$production_biomass_based_diesel)
+France$production <- as.double(Brazil$production)
+France$consumption_fuel_ethanol <- as.double(Brazil$consumption_fuel_ethanol)
+France$consumption_biomass_based_diesel <- as.double(Brazil$consumption_biomass_based_diesel)
+France$consumption <- as.double(Brazil$consumption)
+```
+
+#### Production
+
+This graph shows the total production of biofuel across 6 of the worlds biggest producers of the biofuel.
+
+```{r, echo=FALSE, warning=FALSE}
+ Country_Prod_plot <- ggplot()+
+  geom_smooth(data = Canada, mapping = aes(x = years, y = production, color = 'Canada'))+
+  geom_smooth(data = USA , mapping = aes(x = years, y = production, color = 'USA')) +
+  geom_smooth(data = China, mapping = aes(x = years, y = production, color = 'China')) +
+  geom_smooth(data = Brazil, mapping = aes(x = years, y = production, color = 'Brazil')) +
+  geom_smooth(data = France, mapping = aes(x = years, y = production, color = 'France')) +
+  geom_smooth(data = Germany, mapping = aes(x = years, y = production, color = 'Germany'))
+print(Country_Prod_plot+labs(x="Years", y="Consumption"))
+```
+
+#### Consumption
+
+This graph shows the total consumption of biofuel across 6 of the worlds biggest producers of the biofuel.
+
+```{r, echo=FALSE, warning=FALSE}
+ Country_Con_plot <- ggplot()+
+  geom_smooth(data = Canada, mapping = aes(x = years, y = consumption, color = 'Canada'))+
+  geom_smooth(data = USA , mapping = aes(x = years, y = consumption, color = 'USA')) +
+  geom_smooth(data = China, mapping = aes(x = years, y = consumption, color = 'China')) +
+  geom_smooth(data = Brazil, mapping = aes(x = years, y = consumption, color = 'Brazil')) +
+  geom_smooth(data = France, mapping = aes(x = years, y = consumption, color = 'France')) +
+  geom_smooth(data = Germany, mapping = aes(x = years, y = consumption, color = 'Germany'))
+print(Country_Con_plot+labs(x="Years", y="Consumption"))
+```
+
+#### Correlation
+
+These two graph show the consumption and production of biofuels among the biggest countries in the world. These graph and data seem to convey on clear message which is the improper use and treatment of biofuel. The production graph clearly illustrates that the biggest producer of biofuel is France, where as the biggest consumer is the USA. One issue with this is the fact that the USA is using more than 10,000 items the amount of energy than they are producing. Biofuel as a replacement for other energies I believe should be self sustaining, as it could be a strong renewable source. But, if other countries are using more than they are producing than the energy will not be as efficient or a strong replacement for fossil fuels.
+
+```{r, echo=FALSE, warning=FALSE}
+linear_regression <- lm(consumption ~ production, data = World)
+summary(linear_regression)
+```
+
+#### Production and Consumption
+
+These bar graphs are representing the mean production and consumption of biofuel per country to better illustrate my point about how biofuel needs to be treated as a fuel and energy source which is self sustaining. These bar graphs also show how many of the world's major country are not using biofuel to its fullest potential with France, and Brazil producing the most but the USA consuming more than them both combine. This set of data illustrates that the USA needs to start stepping up as a world leader in biofuel production and should encourage other countries like China, Canada, and Germany to better there efforts in finding cleaner ways to produce and consume biofuel. Through these methods we can hopefully get rid of green house gas emmision for good.
+
+```{r, echo=FALSE, warning=FALSE}
+#Means
+mean_CaP <-mean(Canada$production)
+mean_UsP <-mean(USA$production)
+mean_ChP <-mean(China$production)
+mean_GrP <-mean(Germany$production)
+mean_FrP <-mean(France$production)
+mean_BrP <-mean(Brazil$production)
+Means_List = c(mean_CaP, mean_UsP, mean_ChP, mean_GrP, mean_FrP, mean_BrP)
+Countries_List = c("Canada", "USA", "China", "Germany", "France", "Brazil")
+means <- tibble(World_Means = Means_List, World_Countries = Countries_List)
+p_plot <- ggplot(data = means) +
+  geom_col(mapping = aes(y = World_Means, x = Countries_List, fill = World_Countries)) +
+  ggtitle("Average Amount of Biofuel Produced Per Country")
+print(p_plot+labs(x="Countries", y="Average Amount of Biofuel Produced"))
+```
+
+```{r, echo=FALSE, warning=FALSE}
+mean_CaC <-mean(Canada$consumption)
+mean_UsC <-mean(USA$consumption)
+mean_ChC <-mean(China$consumption)
+mean_GrC <-mean(Germany$consumption)
+mean_FrC <-mean(France$consumption)
+mean_BrC <-mean(Brazil$consumption)
+Means_List = c(mean_CaC, mean_UsC, mean_ChC, mean_GrC, mean_FrC, mean_BrC)
+Countries_List = c("Canada", "USA", "China", "Germany", "France", "Brazil")
+means <- tibble(World_Means = Means_List, World_Countries = Countries_List)
+c_plot <- ggplot(data = means) +
+  geom_col(mapping = aes(y = World_Means, x = Countries_List, fill = World_Countries)) +
+  ggtitle("Average Amount of Biofuel Consumed Per Country")
+print(c_plot+labs(x="Countries", y="Average Amount of Biofuel Consumed"))
+```
+
+### Coal
+
+The production of coal has had a significant impact on the climate. When coal is burned, it releases large amounts of carbon dioxide and other greenhouse gases into the atmosphere. These gases trap heat from the sun and warm the Earth's surface, leading to a phenomenon known as global warming. As the Earth's temperature increases, it can cause a range of impacts, including more frequent and severe heatwaves, droughts, and storms. It can also cause sea levels to rise, which can lead to flooding and other coastal impacts.
+
+```{r, echo=FALSE, warning=FALSE}
+#---
+#title: "Coal dataset"
+#author: "Rupesh Rangwani"
+#---
+coalcoke_df <- read_csv("INT-Export-CoalCoke-09-09-2022_23-09-12.csv")
+coalcoke_col <- coalcoke_df$`Report generated on: 09-09-2022 23:09:12`
+Years <- str_split(coalcoke_col[1],",")
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+```
+
+```{r, echo=FALSE, warning=FALSE}
+#Production of Coal
+World_Production <- str_split(coalcoke_col[3], ",")
+World_Unlist_Production <- World_Production[[1]]
+World_Production <- World_Unlist_Production[54:75]
+
+World_Grab_Coal <- str_split(coalcoke_col[4], ",")
+World_Unlist_Coal <- World_Grab_Coal[[1]]
+World_Grab_Coal <- World_Unlist_Coal[54:75]
+
+
+World_Grab_MetalCoal <- str_split(coalcoke_col[10], ",")
+World_Unlist_MetalCoal <- World_Grab_MetalCoal[[1]]
+World_Grab_MetalCoal <- World_Unlist_MetalCoal[54:75]
+
+
+World_Emissions <- str_split(coalcoke_col[37], ",")
+World_Unlist_Emissions <- World_Emissions[[1]]
+World_Emissions <- World_Unlist_Emissions[54:75]
+
+
+# Consumption of Worlds Coal
+World_Consumption <- str_split(coalcoke_col[11], ",")
+World_Unlist_Consumption <- World_Consumption[[1]]
+World_Consumption <- World_Unlist_Consumption[54:75]
+
+
+World_Consumption_Coal <- str_split(coalcoke_col[12], ",")
+World_Unlist_Consumption_Coal <- World_Consumption_Coal[[1]]
+World_Consumption_Coal <- World_Unlist_Consumption_Coal[54:75]
+
+
+World_Consumption_MetalCoal <- str_split(coalcoke_col[18], ",")
+World_Unlist_Consumption_MetalCoal <- World_Consumption_MetalCoal[[1]]
+World_Consumption_MetalCoal <- World_Unlist_Consumption_MetalCoal[54:75]
+
+
+World <- tibble(years = Years_3, production_coal = World_Grab_Coal, production_metallurgical_coke = World_Grab_MetalCoal, production = World_Production,emissions = World_Emissions, consumption_coal = World_Consumption_Coal, consumption_metallurgical_coke = World_Consumption_MetalCoal, consumption  = World_Consumption) 
+
+World$years <- as.integer(World$years)
+World$production_coal <- as.double(World$production_coal)
+World$production_metallurgical_coke <- as.double(World$production_metallurgical_coke)
+World$production <- as.double(World$production)
+World$emissions <- as.double(World$emissions)
+World$consumption_coal <- as.double(World$consumption_coal)
+World$consumption_metallurgical_coke <- as.double(World$consumption_metallurgical_coke)
+World$consumption <- as.double(World$consumption)
+
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Canada's Statistics
+
+#Production of Coal
+Canada_Production <- str_split(coalcoke_col[1298], ",")
+Canada_Unlist_Production <- Canada_Production[[1]]
+Canada_Production <- Canada_Unlist_Production[54:75]
+
+
+Canada_Grab_Coal <- str_split(coalcoke_col[1300], ",")
+Canada_Unlist_Coal <- Canada_Grab_Coal[[1]]
+Canada_Grab_Coal <- Canada_Unlist_Coal[54:75]
+
+Canada_Grab_MetalCoal <- str_split(coalcoke_col[1306], ",")
+Canada_Unlist_MetalCoal <- Canada_Grab_MetalCoal[[1]]
+Canada_Grab_MetalCoal <- Canada_Unlist_MetalCoal[54:75]
+
+
+# Consumption of Worlds Coal
+Canada_Consumption <- str_split(coalcoke_col[1307], ",")
+Canada_Unlist_Consumption <- Canada_Consumption[[1]]
+Canada_Consumption <- Canada_Unlist_Consumption[54:75]
+
+
+Canada_Consumption_Coal <- str_split(coalcoke_col[1308], ",")
+Canada_Unlist_Consumption_Coal <- Canada_Consumption_Coal[[1]]
+Canada_Consumption_Coal <- Canada_Unlist_Consumption_Coal[54:75]
+
+
+Canada_Consumption_MetalCoal <- str_split(coalcoke_col[1314], ",")
+Canada_Unlist_Consumption_MetalCoal <- Canada_Consumption_MetalCoal[[1]]
+Canada_Consumption_MetalCoal <- Canada_Unlist_Consumption_MetalCoal[54:75]
+
+
+Canada <- tibble(years = Years_3, production_coal = Canada_Grab_Coal, production_metallurgical_coke = Canada_Grab_MetalCoal, production = Canada_Production, consumption_coal = Canada_Consumption_Coal, consumption_metallurgical_coke = Canada_Consumption_MetalCoal, consumption  = Canada_Consumption) 
+
+Canada$years <- as.integer(Canada$years)
+Canada$production_coal <- as.double(Canada$production_coal)
+Canada$production_metallurgical_coke <- as.double(Canada$production_metallurgical_coke)
+Canada$production <- as.double(Canada$production)
+Canada$consumption_coal <- as.double(Canada$consumption_coal)
+Canada$consumption_metallurgical_coke <- as.double(Canada$consumption_metallurgical_coke)
+Canada$consumption <- as.double(Canada$consumption)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# USA's Statistics
+
+#Production of Coal
+USA_Production <- str_split(coalcoke_col[7923], ",")
+USA_Unlist_Production <- USA_Production[[1]]
+USA_Production <- USA_Unlist_Production[54:75]
+
+
+USA_Grab_Coal <- str_split(coalcoke_col[7924], ",")
+USA_Unlist_Coal <- USA_Grab_Coal[[1]]
+USA_Grab_Coal <- USA_Unlist_Coal[54:75]
+
+
+USA_Grab_MetalCoal <- str_split(coalcoke_col[7930], ",")
+USA_Unlist_MetalCoal <- USA_Grab_MetalCoal[[1]]
+USA_Grab_MetalCoal <- USA_Unlist_MetalCoal[54:75]
+
+
+# Consumption of Coal
+USA_Consumption <- str_split(coalcoke_col[7931], ",")
+USA_Unlist_Consumption <- USA_Consumption[[1]]
+USA_Consumption <- USA_Unlist_Consumption[54:75]
+
+
+USA_Consumption_Coal <- str_split(coalcoke_col[7932], ",")
+USA_Unlist_Consumption_Coal <- USA_Consumption_Coal[[1]]
+USA_Consumption_Coal <- USA_Unlist_Consumption_Coal[54:75]
+
+
+USA_Consumption_MetalCoal <- str_split(coalcoke_col[7938], ",")
+USA_Unlist_Consumption_MetalCoal <- USA_Consumption_MetalCoal[[1]]
+USA_Consumption_MetalCoal <- USA_Unlist_Consumption_MetalCoal[54:75]
+
+
+USA <- tibble(years = Years_3, production_coal = USA_Grab_Coal, production_metallurgical_coke = USA_Grab_MetalCoal, production = USA_Production, consumption_coal = USA_Consumption_Coal, consumption_metallurgical_coke = USA_Consumption_MetalCoal, consumption  = USA_Consumption) 
+
+USA$years <- as.integer(USA$years)
+USA$production_coal <- as.double(USA$production_coal)
+USA$production_metallurgical_coke <- as.double(USA$production_metallurgical_coke)
+USA$production <- as.double(USA$production)
+USA$consumption_coal <- as.double(USA$consumption_coal)
+USA$consumption_metallurgical_coke <- as.double(USA$consumption_metallurgical_coke)
+USA$consumption <- as.double(USA$consumption)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# China's Statistics
+
+#Production of Coal
+China_Production <- str_split(coalcoke_col[1479], ",")
+China_Unlist_Production <- China_Production[[1]]
+China_Production <- China_Unlist_Production[54:75]
+
+
+China_Grab_Coal <- str_split(coalcoke_col[1480], ",")
+China_Unlist_Coal <- China_Grab_Coal[[1]]
+China_Grab_Coal <- China_Unlist_Coal[54:75]
+
+
+China_Grab_MetalCoal <- str_split(coalcoke_col[1486], ",")
+China_Unlist_MetalCoal <- China_Grab_MetalCoal[[1]]
+China_Grab_MetalCoal <- China_Unlist_MetalCoal[54:75]
+
+
+# Consumption of Worlds Coal
+China_Consumption <- str_split(coalcoke_col[1487], ",")
+China_Unlist_Consumption <- China_Consumption[[1]]
+China_Consumption <- China_Unlist_Consumption[54:75]
+
+
+China_Consumption_Coal <- str_split(coalcoke_col[1488], ",")
+China_Unlist_Consumption_Coal <- China_Consumption_Coal[[1]]
+China_Consumption_Coal <- China_Unlist_Consumption_Coal[54:75]
+
+
+China_Consumption_MetalCoal <- str_split(coalcoke_col[1494], ",")
+China_Unlist_Consumption_MetalCoal <- China_Consumption_MetalCoal[[1]]
+China_Consumption_MetalCoal <- China_Unlist_Consumption_MetalCoal[54:75]
+
+
+China <- tibble(years = Years_3, production_coal = China_Grab_Coal, production_metallurgical_coke = China_Grab_MetalCoal, production = China_Production, consumption_coal = China_Consumption_Coal, consumption_metallurgical_coke = China_Consumption_MetalCoal, consumption  = China_Consumption) 
+
+China$years <- as.integer(China$years)
+China$production_coal <- as.double(China$production_coal)
+China$production_metallurgical_coke <- as.double(China$production_metallurgical_coke)
+China$production <- as.double(China$production)
+China$consumption_coal <- as.double(China$consumption_coal)
+China$consumption_metallurgical_coke <- as.double(China$consumption_metallurgical_coke)
+China$consumption <- as.double(China$consumption)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Germany's Statistics
+
+Germany_Production <- str_split(coalcoke_col[2847], ",")
+Germany_Unlist_Production <- Germany_Production[[1]]
+Germany_Production <- Germany_Unlist_Production[54:75]
+
+
+Germany_Grab_Coal <- str_split(coalcoke_col[2848], ",")
+Germany_Unlist_Coal <- Germany_Grab_Coal[[1]]
+Germany_Grab_Coal <- Germany_Unlist_Coal[54:75]
+
+
+Germany_Grab_MetalCoal <- str_split(coalcoke_col[2854], ",")
+Germany_Unlist_MetalCoal <- Germany_Grab_MetalCoal[[1]]
+Germany_Grab_MetalCoal <- Germany_Unlist_MetalCoal[54:75]
+
+
+# Consumption of Coal
+Germany_Consumption <- str_split(coalcoke_col[2855], ",")
+Germany_Unlist_Consumption <- Germany_Consumption[[1]]
+Germany_Consumption <- Germany_Unlist_Consumption[54:75]
+
+Germany_Consumption_Coal <- str_split(coalcoke_col[2856], ",")
+Germany_Unlist_Consumption_Coal <- Germany_Consumption_Coal[[1]]
+Germany_Consumption_Coal <- Germany_Unlist_Consumption_Coal[54:75]
+
+
+Germany_Consumption_MetalCoal <- str_split(coalcoke_col[2862], ",")
+Germany_Unlist_Consumption_MetalCoal <- Germany_Consumption_MetalCoal[[1]]
+Germany_Consumption_MetalCoal <- Germany_Unlist_Consumption_MetalCoal[54:75]
+
+
+Germany <- tibble(years = Years_3, production_coal = Germany_Grab_Coal, production_metallurgical_coke = Germany_Grab_MetalCoal, production = Germany_Production, consumption_coal = Germany_Consumption_Coal, consumption_metallurgical_coke = Germany_Consumption_MetalCoal, consumption  = Germany_Consumption) 
+
+Germany$years <- as.integer(Germany$years)
+Germany$production_coal <- as.double(Germany$production_coal)
+Germany$production_metallurgical_coke <- as.double(Germany$production_metallurgical_coke)
+Germany$production <- as.double(Germany$production)
+Germany$consumption_coal <- as.double(Germany$consumption_coal)
+Germany$consumption_metallurgical_coke <- as.double(Germany$consumption_metallurgical_coke)
+Germany$consumption <- as.double(Germany$consumption)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Brazil's  Statistics
+
+#Production of Coal
+Brazil_Production <- str_split(coalcoke_col[939], ",")
+Brazil_Unlist_Production <- Brazil_Production[[1]]
+Brazil_Production <- Brazil_Unlist_Production[54:75]
+
+
+Brazil_Grab_Coal <- str_split(coalcoke_col[940], ",")
+Brazil_Unlist_Coal <- Brazil_Grab_Coal[[1]]
+Brazil_Grab_Coal <- Brazil_Unlist_Coal[54:75]
+
+
+Brazil_Grab_MetalCoal <- str_split(coalcoke_col[946], ",")
+Brazil_Unlist_MetalCoal <- Brazil_Grab_MetalCoal[[1]]
+Brazil_Grab_MetalCoal <- Brazil_Unlist_MetalCoal[54:75]
+
+
+# Consumption of France's Coal
+Brazil_Consumption <- str_split(coalcoke_col[947], ",")
+Brazil_Unlist_Consumption <- Brazil_Consumption[[1]]
+Brazil_Consumption <- Brazil_Unlist_Consumption[54:75]
+
+
+Brazil_Consumption_Coal <- str_split(coalcoke_col[948], ",")
+Brazil_Unlist_Consumption_Coal <- Brazil_Consumption_Coal[[1]]
+Brazil_Consumption_Coal <- Brazil_Unlist_Consumption_Coal[54:75]
+
+
+Brazil_Consumption_MetalCoal <- str_split(coalcoke_col[954], ",")
+Brazil_Unlist_Consumption_MetalCoal <- Brazil_Consumption_MetalCoal[[1]]
+Brazil_Consumption_MetalCoal <- Brazil_Unlist_Consumption_MetalCoal[54:75]
+
+
+Brazil <- tibble(years = Years_3, production_coal = Brazil_Grab_Coal, production_metallurgical_coke = Brazil_Grab_MetalCoal, production = Brazil_Production, consumption_coal = Brazil_Consumption_Coal, consumption_metallurgical_coke = Brazil_Consumption_MetalCoal, consumption  = Brazil_Consumption) 
+
+Brazil$years <- as.integer(Brazil$years)
+Brazil$production_coal <- as.double(Brazil$production_coal)
+Brazil$production_metallurgical_coke <- as.double(Brazil$production_metallurgical_coke)
+Brazil$production <- as.double(Brazil$production)
+Brazil$consumption_coal <- as.double(Brazil$consumption_coal)
+Brazil$consumption_metallurgical_coke <- as.double(Brazil$consumption_metallurgical_coke)
+Brazil$consumption <- as.double(Brazil$consumption)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# France's Coal Statistics
+
+#Production of Coal
+France_Production <- str_split(coalcoke_col[2631], ",")
+France_Unlist_Production <- France_Production[[1]]
+France_Production <- France_Unlist_Production[54:75]
+
+
+France_Grab_Coal <- str_split(coalcoke_col[2632], ",")
+France_Unlist_Coal <- France_Grab_Coal[[1]]
+France_Grab_Coal <- France_Unlist_Coal[54:75]
+
+
+France_Grab_MetalCoal <- str_split(coalcoke_col[2638], ",")
+France_Unlist_MetalCoal <- France_Grab_MetalCoal[[1]]
+France_Grab_MetalCoal <- France_Unlist_MetalCoal[54:75]
+
+# Consumption of France's Coal
+France_Consumption <- str_split(coalcoke_col[2639], ",")
+France_Unlist_Consumption <- France_Consumption[[1]]
+France_Consumption <- France_Unlist_Consumption[54:75]
+
+France_Consumption_Coal <- str_split(coalcoke_col[2640], ",")
+France_Unlist_Consumption_Coal <- France_Consumption_Coal[[1]]
+France_Consumption_Coal <- France_Unlist_Consumption_Coal[54:75]
+
+
+France_Consumption_MetalCoal <- str_split(coalcoke_col[2646], ",")
+France_Unlist_Consumption_MetalCoal <- France_Consumption_MetalCoal[[1]]
+France_Consumption_MetalCoal <- France_Unlist_Consumption_MetalCoal[54:75]
+
+France <- tibble(years = Years_3, production_coal = France_Grab_Coal, production_metallurgical_coke = France_Grab_MetalCoal, production = France_Production, consumption_coal = France_Consumption_Coal, consumption_metallurgical_coke = France_Consumption_MetalCoal, consumption  = France_Consumption) 
+
+France$years <- as.integer(France$years)
+France$production_coal <- as.double(France$production_coal)
+France$production_metallurgical_coke <- as.double(France$production_metallurgical_coke)
+France$production <- as.double(France$production)
+France$consumption_coal <- as.double(France$consumption_coal)
+France$consumption_metallurgical_coke <- as.double(France$consumption_metallurgical_coke)
+France$consumption <- as.double(France$consumption)
+
+```
+
+#### Total Coal Emissions of the World
+
+Here we can see a graph of the total coal emissions of the world. From 2000 to 2015 we can see an exponential increase in the emissions of the world. These emissions are mostly large amounts of carbon dioxide and other greenhouse gases.
+
+```{r, echo=FALSE, warning=FALSE}
+graph_world <- ggplot() + geom_smooth(data=World, aes(x=years, y=emissions)) + ggtitle("Total Coal Emissions in the World")
+graph_world
+```
+
+#### Total Coal Production of each Country
+
+Overall, the production of coal has been the highest in China since 2000 whereas the production of coal in the remaining countries is significantly less. China's large population and rapid economic growth have led to an increased demand for energy, which has made coal an attractive option for meeting the country's energy needs. Additionally, China has a large and well-developed coal mining industry, which has made it easier for the country to produce coal in large quantities.
+
+```{r, echo=FALSE, warning=FALSE}
+ggplot()+
+  geom_line(data=Canada, aes(x=years, y=production_coal,color="Canada"))+
+  geom_smooth(data=USA, aes(x=years, y=production_coal, color="USA"))+
+  geom_smooth(data=China, aes(x=years, y=production_coal, color="China"))+
+  geom_smooth(data=Brazil, aes(x=years, y=production_coal, color="Brazil"))+
+  geom_smooth(data=France, aes(x=years, y=production_coal, color="France"))+
+  geom_smooth(data=Germany, aes(x=years, y=production_coal, color="Germany"))+
+  ggtitle("Total Coal Production by Country")
+
+```
+
+### Electricity
+
+```{r, echo=FALSE, warning=FALSE}
+
+#title: "Electricity dataset"
+#author: Alexandros Ioannou
+#date: '2022-12-01'
+
+# Importing the electricity dataset
+electricity_df <- read_csv("INT-Export-Electricity-09-09-2022_23-11-57.csv")
+elec_column <- electricity_df$`Report generated on: 09-09-2022 23:11:57`
+```
+
+Electricity plays a significant role in climate change. The production of electricity is a major source of greenhouse gas emissions, which contribute to global warming.There are several ways in which electricity production affects climate change. First, the burning of fossil fuels such as coal, natural gas, and oil to generate electricity produces large amounts of carbon dioxide (CO2) and other greenhouse gases. These gases trap heat in the atmosphere, causing the earth's temperature to rise.
+
+In the graphs below, the main focus is the generation of electricity from the countries. The total generation consists nuclear, fossil fuels, renewables, and hydropump storage. These are the factors that have the most contribution to climate change.
+
+```{r, echo=FALSE, warning=FALSE}
+# Splitting the year columns, taking 2000-2021
+Years <- str_split(elec_column[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[23:44]
+
+# Generation of Worlds Electricity by category
+#print("Generation (billion kWh)")
+World_Grab_Gen <- str_split(elec_column[3], ",")
+World_Unlist_Gen <- World_Grab_Gen[[1]]
+World_Gen <- World_Unlist_Gen[23:44]
+
+#print("Generation - Nuclear (billion kWh)")
+World_Grab_gnuclear <- str_split(elec_column[4], ",")
+World_Unlist_gnuclear <- World_Grab_gnuclear[[1]]
+World_g_nuclear <- World_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+World_Grab_gfossilfuel <- str_split(elec_column[5], ",")
+World_Unlist_gfossilfuel <- World_Grab_gfossilfuel[[1]]
+World_g_fossilfuel <- World_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+World_Grab_grenew <- str_split(elec_column[6], ",")
+World_Unlist_grenew <- World_Grab_grenew[[1]]
+World_g_renew <- World_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+World_Grab_ghydropump <- str_split(elec_column[15], ",")
+World_Unlist_ghydropump <- World_Grab_ghydropump[[1]]
+World_g_hydropump <- World_Unlist_ghydropump[23:44]
+
+# Consumption of Worlds Electricity
+#print("Consumption (billion kWh)")
+World_Grab_consumption <- str_split(elec_column[16], ",")
+World_Unlist_consumption <- World_Grab_consumption[[1]]
+World_consumption <- World_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+World <- tibble(years = Years_3, Generation_Nuclear = World_g_nuclear, Generation_FossilFuel = World_g_fossilfuel, Generation_Renewables = World_g_renew, Generation_HydroPumpStorage = World_g_hydropump, Generation_Total = World_Gen, Consumption_Total = World_consumption)
+
+# Assigning the correct variable types
+World$years <- as.integer(World$years)
+World$Generation_Nuclear <- as.double(World$Generation_Nuclear)
+World$Generation_FossilFuel <- as.double(World$Generation_FossilFuel)
+World$Generation_Renewables <- as.double(World$Generation_Renewables)
+World$Generation_HydroPumpStorage <- as.double(World$Generation_HydroPumpStorage)
+World$Generation_Total <- as.double(World$Generation_Total)
+World$Consumption_Total <- as.double(World$Consumption_Total)
+
+```
+
+```{r, echo=FALSE,, warning=FALSE}
+# Canada's Electricity Statistics
+
+# Generation of Canada's Electricity by category
+#print("Generation (billion kWh)")
+Canada_Grab_Gen <- str_split(elec_column[1155], ",")
+Canada_Unlist_Gen <- Canada_Grab_Gen[[1]]
+Canada_Gen <- Canada_Unlist_Gen[23:44]
+#Canada_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+Canada_Grab_gnuclear <- str_split(elec_column[1156], ",")
+Canada_Unlist_gnuclear <- Canada_Grab_gnuclear[[1]]
+Canada_g_nuclear <- Canada_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+Canada_Grab_gfossilfuel <- str_split(elec_column[1157], ",")
+Canada_Unlist_gfossilfuel <- Canada_Grab_gfossilfuel[[1]]
+Canada_g_fossilfuel <- Canada_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+Canada_Grab_grenew <- str_split(elec_column[1158], ",")
+Canada_Unlist_grenew <- Canada_Grab_grenew[[1]]
+Canada_g_renew <- Canada_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+Canada_Grab_ghydropump <- str_split(elec_column[1167], ",")
+Canada_Unlist_ghydropump <- Canada_Grab_ghydropump[[1]]
+Canada_g_hydropump <- Canada_Unlist_ghydropump[23:44]
+
+# Consumption of Canada's Electricity
+#print("Consumption (billion kWh)")
+Canada_Grab_consumption <- str_split(elec_column[1168], ",")
+Canada_Unlist_consumption <- Canada_Grab_consumption[[1]]
+Canada_consumption <- Canada_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+Canada <- tibble(years = Years_3, Generation_Nuclear = Canada_g_nuclear, Generation_FossilFuel = Canada_g_fossilfuel, Generation_Renewables = Canada_g_renew, Generation_HydroPumpStorage = Canada_g_hydropump, Generation_Total = Canada_Gen, Consumption_Total = Canada_consumption)
+
+# Assigning the correct variable types
+Canada$years <- as.integer(Canada$years)
+Canada$Generation_Nuclear <- as.double(Canada$Generation_Nuclear)
+Canada$Generation_FossilFuel <- as.double(Canada$Generation_FossilFuel)
+Canada$Generation_Renewables <- as.double(Canada$Generation_Renewables)
+Canada$Generation_HydroPumpStorage <- as.double(Canada$Generation_HydroPumpStorage)
+Canada$Generation_Total <- as.double(Canada$Generation_Total)
+Canada$Consumption_Total <- as.double(Canada$Consumption_Total)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# USA's Electricity Statistics
+
+# Generation of USA's Electricity by category
+#print("Generation (billion kWh)")
+USA_Grab_Gen <- str_split(elec_column[7043], ",")
+USA_Unlist_Gen <- USA_Grab_Gen[[1]]
+USA_Gen <- USA_Unlist_Gen[23:44]
+#USA_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+USA_Grab_gnuclear <- str_split(elec_column[7044], ",")
+USA_Unlist_gnuclear <- USA_Grab_gnuclear[[1]]
+USA_g_nuclear <- USA_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+USA_Grab_gfossilfuel <- str_split(elec_column[7045], ",")
+USA_Unlist_gfossilfuel <- USA_Grab_gfossilfuel[[1]]
+USA_g_fossilfuel <- USA_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+USA_Grab_grenew <- str_split(elec_column[7046], ",")
+USA_Unlist_grenew <- USA_Grab_grenew[[1]]
+USA_g_renew <- USA_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+USA_Grab_ghydropump <- str_split(elec_column[7055], ",")
+USA_Unlist_ghydropump <- USA_Grab_ghydropump[[1]]
+USA_g_hydropump <- USA_Unlist_ghydropump[23:44]
+
+# Consumption of USA's Electricity
+#print("Consumption (billion kWh)")
+USA_Grab_consumption <- str_split(elec_column[7056], ",")
+USA_Unlist_consumption <- USA_Grab_consumption[[1]]
+USA_consumption <- USA_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+USA <- tibble(years = Years_3, Generation_Nuclear = USA_g_nuclear, Generation_FossilFuel = USA_g_fossilfuel, Generation_Renewables = USA_g_renew, Generation_HydroPumpStorage = USA_g_hydropump, Generation_Total = USA_Gen, Consumption_Total = USA_consumption)
+
+# Assigning the correct variable types
+USA$years <- as.integer(USA$years)
+USA$Generation_Nuclear <- as.double(USA$Generation_Nuclear)
+USA$Generation_FossilFuel <- as.double(USA$Generation_FossilFuel)
+USA$Generation_Renewables <- as.double(USA$Generation_Renewables)
+USA$Generation_HydroPumpStorage <- as.double(USA$Generation_HydroPumpStorage)
+USA$Generation_Total <- as.double(USA$Generation_Total)
+USA$Consumption_Total <- as.double(USA$Consumption_Total)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# China's Electricity Statistics
+
+# Generation of China's Electricity by category
+#print("Generation (billion kWh)")
+China_Grab_Gen <- str_split(elec_column[1315], ",")
+China_Unlist_Gen <- China_Grab_Gen[[1]]
+China_Gen <- China_Unlist_Gen[23:44]
+#China_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+China_Grab_gnuclear <- str_split(elec_column[1316], ",")
+China_Unlist_gnuclear <- China_Grab_gnuclear[[1]]
+China_g_nuclear <- China_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+China_Grab_gfossilfuel <- str_split(elec_column[1317], ",")
+China_Unlist_gfossilfuel <- China_Grab_gfossilfuel[[1]]
+China_g_fossilfuel <- China_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+China_Grab_grenew <- str_split(elec_column[1318], ",")
+China_Unlist_grenew <- China_Grab_grenew[[1]]
+China_g_renew <- China_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+China_Grab_ghydropump <- str_split(elec_column[1327], ",")
+China_Unlist_ghydropump <- China_Grab_ghydropump[[1]]
+China_g_hydropump <- China_Unlist_ghydropump[23:44]
+
+# Consumption of China's Electricity
+#print("Consumption (billion kWh)")
+China_Grab_consumption <- str_split(elec_column[1328], ",")
+China_Unlist_consumption <- China_Grab_consumption[[1]]
+China_consumption <- China_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+China <- tibble(years = Years_3, Generation_Nuclear = China_g_nuclear, Generation_FossilFuel = China_g_fossilfuel, Generation_Renewables = China_g_renew, Generation_HydroPumpStorage = China_g_hydropump, Generation_Total = China_Gen, Consumption_Total = China_consumption)
+
+# Assigning the correct variable types
+China$years <- as.integer(China$years)
+China$Generation_Nuclear <- as.double(China$Generation_Nuclear)
+China$Generation_FossilFuel <- as.double(China$Generation_FossilFuel)
+China$Generation_Renewables <- as.double(China$Generation_Renewables)
+China$Generation_HydroPumpStorage <- as.double(China$Generation_HydroPumpStorage)
+China$Generation_Total <- as.double(China$Generation_Total)
+China$Consumption_Total <- as.double(China$Consumption_Total)
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Germany's Electricity Statistics
+
+# Generation of Germany's Electricity by category
+#print("Generation (billion kWh)")
+Germany_Grab_Gen <- str_split(elec_column[2531], ",")
+Germany_Unlist_Gen <- Germany_Grab_Gen[[1]]
+Germany_Gen <- Germany_Unlist_Gen[23:44]
+#Germany_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+Germany_Grab_gnuclear <- str_split(elec_column[2532], ",")
+Germany_Unlist_gnuclear <- Germany_Grab_gnuclear[[1]]
+Germany_g_nuclear <- Germany_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+Germany_Grab_gfossilfuel <- str_split(elec_column[2533], ",")
+Germany_Unlist_gfossilfuel <- Germany_Grab_gfossilfuel[[1]]
+Germany_g_fossilfuel <- Germany_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+Germany_Grab_grenew <- str_split(elec_column[2534], ",")
+Germany_Unlist_grenew <- Germany_Grab_grenew[[1]]
+Germany_g_renew <- Germany_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+Germany_Grab_ghydropump <- str_split(elec_column[2543], ",")
+Germany_Unlist_ghydropump <- Germany_Grab_ghydropump[[1]]
+Germany_g_hydropump <- Germany_Unlist_ghydropump[23:44]
+
+# Consumption of Germany's Electricity
+#print("Consumption (billion kWh)")
+Germany_Grab_consumption <- str_split(elec_column[2544], ",")
+Germany_Unlist_consumption <- Germany_Grab_consumption[[1]]
+Germany_consumption <- Germany_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+Germany <- tibble(years = Years_3, Generation_Nuclear = Germany_g_nuclear, Generation_FossilFuel = Germany_g_fossilfuel, Generation_Renewables = Germany_g_renew, Generation_HydroPumpStorage = Germany_g_hydropump, Generation_Total = Germany_Gen, Consumption_Total = Germany_consumption)
+
+# Assigning the correct variable types
+Germany$years <- as.integer(Germany$years)
+Germany$Generation_Nuclear <- as.double(Germany$Generation_Nuclear)
+Germany$Generation_FossilFuel <- as.double(Germany$Generation_FossilFuel)
+Germany$Generation_Renewables <- as.double(Germany$Generation_Renewables)
+Germany$Generation_HydroPumpStorage <- as.double(Germany$Generation_HydroPumpStorage)
+Germany$Generation_Total <- as.double(Germany$Generation_Total)
+Germany$Consumption_Total <- as.double(Germany$Consumption_Total)
+
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# Brazil's Electricity Statistics
+
+# Generation of Brazil's Electricity by category
+#print("Generation (billion kWh)")
+Brazil_Grab_Gen <- str_split(elec_column[835], ",")
+Brazil_Unlist_Gen <- Brazil_Grab_Gen[[1]]
+Brazil_Gen <- Brazil_Unlist_Gen[23:44]
+#Brazil_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+Brazil_Grab_gnuclear <- str_split(elec_column[836], ",")
+Brazil_Unlist_gnuclear <- Brazil_Grab_gnuclear[[1]]
+Brazil_g_nuclear <- Brazil_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+Brazil_Grab_gfossilfuel <- str_split(elec_column[837], ",")
+Brazil_Unlist_gfossilfuel <- Brazil_Grab_gfossilfuel[[1]]
+Brazil_g_fossilfuel <- Brazil_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+Brazil_Grab_grenew <- str_split(elec_column[838], ",")
+Brazil_Unlist_grenew <- Brazil_Grab_grenew[[1]]
+Brazil_g_renew <- Brazil_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+Brazil_Grab_ghydropump <- str_split(elec_column[847], ",")
+Brazil_Unlist_ghydropump <- Brazil_Grab_ghydropump[[1]]
+Brazil_g_hydropump <- Brazil_Unlist_ghydropump[23:44]
+
+# Consumption of Brazil's Electricity
+#print("Consumption (billion kWh)")
+Brazil_Grab_consumption <- str_split(elec_column[848], ",")
+Brazil_Unlist_consumption <- Brazil_Grab_consumption[[1]]
+Brazil_consumption <- Brazil_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+Brazil <- tibble(years = Years_3, Generation_Nuclear = Brazil_g_nuclear, Generation_FossilFuel = Brazil_g_fossilfuel, Generation_Renewables = Brazil_g_renew, Generation_HydroPumpStorage = Brazil_g_hydropump, Generation_Total = Brazil_Gen, Consumption_Total = Brazil_consumption)
+
+# Assigning the correct variable types
+Brazil$years <- as.integer(Brazil$years)
+Brazil$Generation_Nuclear <- as.double(Brazil$Generation_Nuclear)
+Brazil$Generation_FossilFuel <- as.double(Brazil$Generation_FossilFuel)
+Brazil$Generation_Renewables <- as.double(Brazil$Generation_Renewables)
+Brazil$Generation_HydroPumpStorage <- as.double(Brazil$Generation_HydroPumpStorage)
+Brazil$Generation_Total <- as.double(Brazil$Generation_Total)
+Brazil$Consumption_Total <- as.double(Brazil$Consumption_Total)
+
+
+```
+
+```{r, echo=FALSE, warning=FALSE}
+# France's Electricity Statistics
+
+# Generation of France's Electricity by category
+#("Generation (billion kWh)")
+France_Grab_Gen <- str_split(elec_column[2339], ",")
+France_Unlist_Gen <- France_Grab_Gen[[1]]
+France_Gen <- France_Unlist_Gen[23:44]
+#France_Gen
+
+#print("Generation - Nuclear (billion kWh)")
+France_Grab_gnuclear <- str_split(elec_column[2340], ",")
+France_Unlist_gnuclear <- France_Grab_gnuclear[[1]]
+France_g_nuclear <- France_Unlist_gnuclear[23:44]
+
+#print("Generation - Fossil Fuels (billion kWh)")
+France_Grab_gfossilfuel <- str_split(elec_column[2341], ",")
+France_Unlist_gfossilfuel <- France_Grab_gfossilfuel[[1]]
+France_g_fossilfuel <- France_Unlist_gfossilfuel[23:44]
+
+#print("Generation - Renewables (billion kWh)")
+France_Grab_grenew <- str_split(elec_column[2342], ",")
+France_Unlist_grenew <- France_Grab_grenew[[1]]
+France_g_renew <- France_Unlist_grenew[23:44]
+
+#print("Generation - Hydroelectric pumped storage (billion kWh)")
+France_Grab_ghydropump <- str_split(elec_column[2351], ",")
+France_Unlist_ghydropump <- France_Grab_ghydropump[[1]]
+France_g_hydropump <- France_Unlist_ghydropump[23:44]
+
+# Consumption of Brazil's Electricity
+#print("Consumption (billion kWh)")
+France_Grab_consumption <- str_split(elec_column[2352], ",")
+France_Unlist_consumption <- France_Grab_consumption[[1]]
+France_consumption <- France_Unlist_consumption[23:44]
+
+# Generating a tibble for the data
+France <- tibble(years = Years_3, Generation_Nuclear = France_g_nuclear, Generation_FossilFuel = France_g_fossilfuel, Generation_Renewables = France_g_renew, Generation_HydroPumpStorage = France_g_hydropump, Generation_Total = France_Gen, Consumption_Total = France_consumption)
+
+# Assigning the correct variable types
+France$years <- as.integer(France$years)
+France$Generation_Nuclear <- as.double(France$Generation_Nuclear)
+France$Generation_FossilFuel <- as.double(France$Generation_FossilFuel)
+France$Generation_Renewables <- as.double(France$Generation_Renewables)
+France$Generation_HydroPumpStorage <- as.double(France$Generation_HydroPumpStorage)
+France$Generation_Total <- as.double(France$Generation_Total)
+France$Consumption_Total <- as.double(France$Consumption_Total)
+
+```
+
+#### Total Generation by Country
+
+Here we can see a graph of the total production of electricity by country. It is obvious that USA and China are the largest producers of electricity and far above the rest of the countries. Both countries have large populations and high levels of industrialization, which require significant amounts of electricity to power homes, businesses, and factories. Since the burning of fossil fuels, such as coal and natural gas are needed to produce electricity, this significant increase from 2000-2021 solely from these countries is directly correlated to the change in climate.
+
+```{r, echo=FALSE, warning=FALSE}
+# Generation total by countries
+total_gen<-ggplot()+
+  geom_smooth(data=Canada, aes(x=years, y=Generation_Total,color="Canada"))+
+  geom_smooth(data=USA, aes(x=years, y=Generation_Total, color="USA"))+
+  geom_smooth(data=China, aes(x=years, y=Generation_Total, color="China"))+
+  geom_smooth(data=Brazil, aes(x=years, y=Generation_Total, color="Brazil"))+
+  geom_smooth(data=France, aes(x=years, y=Generation_Total, color="France"))+
+  geom_smooth(data=Germany, aes(x=years, y=Generation_Total, color="Germany"))+
+  ggtitle("Total Generation by Country")
+print(total_gen+labs(x="Years", y="Total (billion kWh)"))
+
+```
+
+#### Total Nuclear Generation by Country
+
+Here we can see a graph of the total nuclear electricity by country. The generation of nuclear electricity has a minimal impact on climate change compared to other forms of electricity generation. Nuclear power plants do not produce greenhouse gas emissions when they generate electricity, unlike fossil fuel-based power plants, which release large amounts of carbon dioxide (CO2) and other greenhouse gases into the atmosphere. USA has the largest contribution of nuclear generation by far, with France being the second largest. Overall, nuclear generation seems to be neutral by most countries over the past 21 years with the exception of China which has seen an exponential increase from 2013-2021.
+
+```{r, echo=FALSE, warning=FALSE}
+# Generation nuclear by countries
+nuclear_gen<-ggplot()+
+  geom_smooth(data=Canada, aes(x=years, y=Generation_Nuclear,color="Canada"))+
+  geom_smooth(data=USA, aes(x=years, y=Generation_Nuclear, color="USA"))+
+  geom_smooth(data=China, aes(x=years, y=Generation_Nuclear, color="China"))+
+  geom_smooth(data=Brazil, aes(x=years, y=Generation_Nuclear, color="Brazil"))+
+  geom_smooth(data=France, aes(x=years, y=Generation_Nuclear, color="France"))+
+  geom_smooth(data=Germany, aes(x=years, y=Generation_Nuclear, color="Germany"))+
+  ggtitle("Nuclear Generation by Country")
+print(nuclear_gen+labs(x="Years", y="Nuclear (billion kWh)"))
+```
+
+#### Total Fossil Fuel Generation by Country
+
+Here we can see a graph of the total fossil fuel generation by each country. The generation of electricity from fossil fuels has a significant impact on climate change. Fossil fuels, such as coal, natural gas, and oil, are the primary sources of energy for electricity generation around the world. When these fuels are burned to produce electricity, they release large amounts of carbon dioxide (CO2) and other greenhouse gases into the atmosphere. The production of fossil fuels has remained steady throughout most of the countries except China which has had an exponential increase in the last 21 years.
+
+```{r, echo=FALSE, warning=FALSE}
+# Generation fossil fuels by countries
+fossil_gen<-ggplot()+
+  geom_smooth(data=Canada, aes(x=years, y=Generation_FossilFuel,color="Canada"))+
+  geom_smooth(data=USA, aes(x=years, y=Generation_FossilFuel, color="USA"))+
+  geom_smooth(data=China, aes(x=years, y=Generation_FossilFuel, color="China"))+
+  geom_smooth(data=Brazil, aes(x=years, y=Generation_FossilFuel, color="Brazil"))+
+  geom_smooth(data=France, aes(x=years, y=Generation_FossilFuel, color="France"))+
+  geom_smooth(data=Germany, aes(x=years, y=Generation_FossilFuel, color="Germany"))+
+  ggtitle("Fossil Fuel Generation by Country")
+print(fossil_gen+labs(x="Years", y="Fossil Fuel (billion kWh)"))
+```
+
+### Sea Ice
+
+Sea ice plays a crucial role in the Earth's climate system. When sunlight hits the Earth's surface, some of it is reflected back into the atmosphere by bright surfaces like snow and ice. This process, known as albedo, helps to cool the planet. Sea ice has a particularly high albedo, so when it covers a large area of the ocean, it reflects a significant amount of sunlight back into space. This helps to keep the Earth's temperature in balance. However, as the Earth's temperature increases due to climate change, sea ice is melting at an alarming rate. As the ice melts, it exposes the dark ocean surface, which absorbs more heat from the sun. This causes the ocean to warm, which in turn causes more ice to melt. This feedback loop can accelerate the warming of the planet, leading to even more severe impacts of climate change. Therefore, the loss of sea ice can exacerbate the effects of climate change, making it even more important to reduce greenhouse gas emissions and slow global warming.
+
+Below are graphs showing the monthly and annual average sea ice extent and area from 1979 to the most recent month (in 2022), for both the Northen and Southern Hemispheres (in millions of square kilometers). (Data is from the NSIDC Sea Ice Index)
+
+#### Sea Ice Index Monthly Data by Year
+
+(In millions of square kilometers)
+
+```{r, echo=FALSE, warning=FALSE}
+#---
+#title: "Sea Ice Index Dataset"
+#author: Anil Isilak
+#---
+sea_ice <- read_excel("Sea_Ice_Index_Monthly_Data_by_Year_G02135_v3.0.xlsx")
+#summary(sea_ice)
+sea_ice = sea_ice[-1,]
+sea_ice = subset(sea_ice,select = -...14)
+a <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=January)) + geom_smooth() 
+b <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=February)) + geom_smooth()
+c <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=March)) + geom_smooth()
+d <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=April)) + geom_smooth()
+e <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=May)) + geom_smooth()
+f <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=June)) + geom_smooth()
+g <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=July)) + geom_smooth()
+h <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=August)) + geom_smooth()
+i <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=September)) + geom_smooth()
+j <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=October)) + geom_smooth()
+k <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=November)) + geom_smooth()
+l <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=December)) + geom_smooth()
+m <- sea_ice %>% rename(Year = ...1) %>%
+  ggplot(mapping = aes(x=Year,y=Annual)) + geom_smooth()
+ggarrange(a,b,c,d,e,f,g,h,i,j,k,l,
+          nrow=4,ncol=3)
+
+
+```
+
+#### Sea Ice Index Annual Data by Year
+
+```{r, echo=FALSE, warning=FALSE}
+m
+```
+
+As can be seen in the graphs above, sea ice over the years has been decreasing, meaning overall the oceans have a lower albedo which is further going to increase the planets temperature and speed up global warming. However it can also be noted that in recent years, due to the covid lockdown which overall lowered CO2 emissions, the sea ice has seen some increase in volume (especially visible in the annual graph).
+
+## Natural Gas
+
+```{r, include=FALSE, warning=FALSE}
+#---
+#title: "Natural-Gas-Abrar"
+#author: "Abrar Usman"
+#date: "2022-12-13"
+#output: html_document
+#---
+
+fuel<-read_csv("INT-Export-NaturalGas-09-09-2022_23-11-09.csv")
+glimpse(fuel)
+fueldf<-fuel$`Report generated on: 09-09-2022 23:11:09`
+```
+
+Natural gas is a fossil fuel formed over millions of years from the decomposition of organic materials. It is a colorless, odorless, and tasteless hydrocarbon gas mixture, primarily consisting of methane, along with smaller amounts of other hydrocarbons such as ethane, propane, and butane. Natural gas is often referred to as "the cleanest burning fossil fuel" because it produces fewer air pollutants and greenhouse gases than other fossil fuels when burned. It is commonly used for heating, cooking, and electricity generation, and is also used as a raw material in the production of various products.
+
+When burned, it produces fewer air pollutants and greenhouse gases than other fossil fuels such as coal and oil. However, the extraction and transportation of natural gas can still have environmental impacts, such as air and water pollution and the potential for accidents and leaks. In addition, the extraction of natural gas, particularly through the process of hydraulic fracturing or "fracking," has been linked to increased levels of methane in the atmosphere. Methane is a potent greenhouse gas, with a global warming potential that is more than 25 times greater than carbon dioxide over a 100-year time horizon.
+
+While natural gas can play a role in reducing greenhouse gas emissions in the short term, its long-term use as a primary energy source may not be sustainable in the context of addressing climate change. Increasing the use of renewable energy sources, such as wind and solar power, is seen as a more effective and sustainable way to reduce greenhouse gas emissions and combat climate change.
+
+```{r, echo=FALSE, warning=FALSE}
+# Retrieves Year Data
+print("Years Chosen")
+Years <- str_split(fueldf[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+Years_3
+
+print("World Gross Natural Gas")
+World_Gross_Natural_Gas_Production <- str_split(fueldf[4], ",")
+World_Unlist_Production <- World_Gross_Natural_Gas_Production[[1]]
+World_Production <- World_Unlist_Production[54:75]
+World_Production
+
+print("World Emmission")
+WEM <- str_split(fueldf[16], ",")
+World_Unlist_Production <- WEM[[1]]
+World_Emmissions <- World_Unlist_Production[54:75]
+World_Emmissions
+
+print("Canada Natural Gas")
+CNG <- str_split(fueldf[544], ",")
+Canada_Unlist_Production <- CNG[[1]]
+Canada_Production <- Canada_Unlist_Production[54:75]
+Canada_Production
+
+print("Canada Emmission")
+CE <- str_split(fueldf[556], ",")
+Canada_Unlist_Production <- CE[[1]]
+Canada_Emmissions <- Canada_Unlist_Production[54:75]
+Canada_Emmissions
+
+print("US Natural Gas")
+UNG <- str_split(fueldf[3304], ",")
+US_Unlist_Production <- UNG[[1]]
+US_Production <- US_Unlist_Production[54:75]
+US_Production
+
+print("US Emmission")
+USE <- str_split(fueldf[3316], ",")
+US_Unlist_Production <- USE[[1]]
+US_Emmissions <- US_Unlist_Production[54:75]
+US_Emmissions
+
+print("China Natural Gas")
+CHNG <- str_split(fueldf[619], ",")
+China_Unlist_Production <- CHNG[[1]]
+China_Production <- China_Unlist_Production[54:75]
+China_Production
+
+print("China Emmission")
+CHE <- str_split(fueldf[631], ",")
+China_Unlist_Production <- CHE[[1]]
+China_Emmissions <- China_Unlist_Production[54:75]
+China_Emmissions
+
+print("Germany Natural Gas")
+GNG <- str_split(fueldf[1189], ",")
+World_Unlist_Production <- GNG[[1]]
+World_Production <- World_Unlist_Production[54:75]
+World_Production
+
+print("Germany Emmission")
+GE <- str_split(fueldf[1201], ",")
+World_Unlist_Production <- GE[[1]]
+World_Production <- World_Unlist_Production[54:75]
+World_Production
+
+print("Brazil Natural Gas")
+BNG <- str_split(fueldf[394], ",")
+Brazil_Unlist_Production <- BNG[[1]]
+Brazil_Production <- Brazil_Unlist_Production[54:75]
+Brazil_Production
+
+print("Brazil Emmission")
+BE <- str_split(fueldf[406], ",")
+Brazil_Unlist_Production <- BE[[1]]
+Brazil_Emmissions <- Brazil_Unlist_Production[54:75]
+Brazil_Emmissions
+
+print("France Natural Gas")
+FNG <- str_split(fueldf[1099], ",")
+France_Unlist_Production <- FNG[[1]]
+France_Production <- France_Unlist_Production[54:75]
+France_Production
+
+print("France Emmission")
+FE <- str_split(fueldf[1111], ",")
+France_Unlist_Production <- FE[[1]]
+France_Emmissions <- France_Unlist_Production[54:75]
+France_Emmissions
+
+```
+
+
+```{r, echo=FALSE, warning=FALSE}
+#NOT RUNNING
+#ggplot()+
+  #geom_line(data=Canada_Production, aes(x=years, y=natural_gas_levels,color="Canada"))+
+  #geom_smooth(data=USA, aes(x=years, y=natural_gas_levels, color="USA"))+
+  #geom_smooth(data=China, aes(x=years, y=natural_gas_levels, color="China"))+
+  #geom_smooth(data=Brazil, aes(x=years, y=natural_gas_levels, color="Brazil"))+
+  #geom_smooth(data=France, aes(x=years, y=natural_gas_levelsl, color="France"))+
+  #geom_smooth(data=Germany, aes(x=years, y=natural_gas_levels, color="Germany"))+
+  #ggtitle("Gross Natural Gas Production by Country")
+```
+
+Note that the echo = FALSE parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Based on solely the tidied data above, it can be seen that the general trend in the case of most countries suggests that, as the Natural Gas levels rose, the Emissions declined. The only exceptions were the World levels and France, and in their case as one rose, so did the other. All of this was between the years 2000 to 2021. It is a well established fact that increasing levels of natural gas can lead to an increase in emissions - this is because natural gas is a fossil fuel, and burning it releases greenhouse gases such as carbon dioxide and methane into the atmosphere. These gases contribute to climate change and can have negative impacts on the environment and public health. I was quite surprised that most of these major countries did not follow this trend, and believe it could be due to rising climate awareness that has been occurring and gaining immense popularity since the early 2000s. I believe these governments took initiatives to make this happen, and ultimately raise the bar for healthy living. 
+
+
+## Petro Liquids
+```{r, echo=FALSE, warning=FALSE}
+#---
+#title: "Petro Liquids dataset"
+#author: "Shayaan Niazi"
+#date: "12/7/2022"
+#output: html_document
+#---
+data <- read_csv("INT-Export-PetroLiquids-09-09-2022_23-10-18.csv") 
+```
+```{r}
+#petro_liquids_df <- INT_Export_PetroLiquids_09_09_2022_23_10_18
+petro_liquids_col <- data$`Report generated on: 09-09-2022 23:10:18`
+```
+
+```{r}
+#Tidying up the data
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of Worlds PL
+print("Production")
+PL_Production <- str_split(petro_liquids_col[4], ",")
+World_Unlist_Production <- PL_Production[[1]]
+World_PL_Production <- World_Unlist_Production[54:75]
+World_PL_Production
+
+# Emission of Worlds PL
+print("Emissions")
+PL_emissions <- str_split(petro_liquids_col[37], ",")
+World_Unlist_Production <- PL_emissions[[1]]
+World_PL_Emissions <- World_Unlist_Production[54:75]
+World_PL_Emissions
+
+WorldPL <- tibble(years = Years_3, World_PL_Production= World_PL_Production, World_PL_Emissions= World_PL_Emissions)
+WorldPL
+
+WorldPL$years <- as.integer(WorldPL$years)
+WorldPL$World_PL_Production <- as.double(WorldPL$World_PL_Production)
+WorldPL$World_PL_Emissions <- as.double(WorldPL$World_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of Canada's PL
+print("Production")
+Canada_PL_Production <- str_split(petro_liquids_col[1300], ",")
+Canada_Production <- Canada_PL_Production[[1]]
+Canada_PL_Production <- Canada_Production[54:75]
+Canada_PL_Production
+
+# Emission of Canada's PL
+print("Emissions")
+Canada_PL_Emissions <- str_split(petro_liquids_col[1333], ",")
+Canada_Emissions <- Canada_PL_Emissions[[1]]
+Canada_PL_Emissions <- Canada_Emissions[54:75]
+Canada_PL_Emissions
+
+CanadaPL <- tibble(years = Years_3, Canada_PL_Production= Canada_PL_Production, Canada_PL_Emissions= Canada_PL_Emissions)
+CanadaPL
+
+CanadaPL$years <- as.integer(CanadaPL$years)
+CanadaPL$Canada_PL_Production <- as.double(CanadaPL$Canada_PL_Production)
+CanadaPL$Canada_PL_Emissions <- as.double(CanadaPL$Canada_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of USA's PL
+print("Production")
+USA_PL_Production <- str_split(petro_liquids_col[7924], ",")
+USA_Production <- USA_PL_Production[[1]]
+USA_PL_Production <- USA_Production[54:75]
+USA_PL_Production
+
+# Emission of USA PL
+print("Emissions")
+USA_PL_Emissions <- str_split(petro_liquids_col[7957], ",")
+USA_Emissions <- USA_PL_Emissions[[1]]
+USA_PL_Emissions <- USA_Emissions[54:75]
+USA_PL_Emissions
+
+USAPL <- tibble(years = Years_3, USA_PL_Production= USA_PL_Production, USA_PL_Emissions= USA_PL_Emissions)
+USAPL
+
+USAPL$years <- as.integer(USAPL$years)
+USAPL$USA_PL_Production <- as.double(USAPL$USA_PL_Production)
+USAPL$USA_PL_Emissions <- as.double(USAPL$USA_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of China's PL
+print("Production")
+China_PL_Production <- str_split(petro_liquids_col[1480], ",")
+China_Production <- China_PL_Production[[1]]
+China_PL_Production <- China_Production[54:75]
+China_PL_Production
+
+# Emission of China's PL
+print("Emissions")
+China_PL_Emissions <- str_split(petro_liquids_col[1513], ",")
+China_Emissions <- China_PL_Emissions[[1]]
+China_PL_Emissions <- China_Emissions[54:75]
+China_PL_Emissions
+
+ChinaPL <- tibble(years = Years_3, China_PL_Production= China_PL_Production, China_PL_Emissions= China_PL_Emissions)
+ChinaPL
+
+ChinaPL$years <- as.integer(ChinaPL$years)
+ChinaPL$China_PL_Production <- as.double(ChinaPL$China_PL_Production)
+ChinaPL$China_PL_Emissions <- as.double(ChinaPL$China_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of Germany's PL
+print("Production")
+Germany_PL_Production <- str_split(petro_liquids_col[2848], ",")
+Germany_Production <- Germany_PL_Production[[1]]
+Germany_PL_Production <- Germany_Production[54:75]
+Germany_PL_Production
+
+# Emission of China's PL
+print("Emissions")
+Germany_PL_Emissions <- str_split(petro_liquids_col[2881], ",")
+Germany_Emissions <- Germany_PL_Emissions[[1]]
+Germany_PL_Emissions <- Germany_Emissions[54:75]
+Germany_PL_Emissions
+
+GermanyPL <- tibble(years = Years_3, Germany_PL_Production= Germany_PL_Production, Germany_PL_Emissions= Germany_PL_Emissions)
+GermanyPL
+
+GermanyPL$years <- as.integer(GermanyPL$years)
+GermanyPL$Germany_PL_Production <- as.double(GermanyPL$Germany_PL_Production)
+GermanyPL$Germany_PL_Emissions <- as.double(GermanyPL$Germany_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of Brazil's PL
+print("Production")
+Brazil_PL_Production <- str_split(petro_liquids_col[2848], ",")
+Brazil_Production <- Brazil_PL_Production[[1]]
+Brazil_PL_Production <- Brazil_Production[54:75]
+Brazil_PL_Production
+
+# Emission of China's PL
+print("Emissions")
+Brazil_PL_Emissions <- str_split(petro_liquids_col[2881], ",")
+Brazil_Emissions <- Brazil_PL_Emissions[[1]]
+Brazil_PL_Emissions <- Brazil_Emissions[54:75]
+Brazil_PL_Emissions
+
+BrazilPL <- tibble(years = Years_3, Brazil_PL_Production= Brazil_PL_Production, Brazil_PL_Emissions= Brazil_PL_Emissions)
+BrazilPL
+
+BrazilPL$years <- as.integer(BrazilPL$years)
+BrazilPL$Brazil_PL_Production <- as.double(BrazilPL$Brazil_PL_Production)
+BrazilPL$Brazil_PL_Emissions <- as.double(BrazilPL$Brazil_PL_Emissions)
+```
+
+```{r}
+Years <- str_split(petro_liquids_col[1], ",") 
+Years_2 <- Years[[1]]
+Years_3 <- Years_2[54:75]
+
+# Production of Brazil's PL
+print("Production")
+France_PL_Production <- str_split(petro_liquids_col[2632], ",")
+France_Production <- France_PL_Production[[1]]
+France_PL_Production <- France_Production[54:75]
+France_PL_Production
+
+# Emission of China's PL
+print("Emissions")
+France_PL_Emissions <- str_split(petro_liquids_col[2665], ",")
+France_Emissions <- France_PL_Emissions[[1]]
+France_PL_Emissions <- France_Emissions[54:75]
+France_PL_Emissions
+
+FrancePL <- tibble(years = Years_3, France_PL_Production= France_PL_Production, France_PL_Emissions= France_PL_Emissions)
+FrancePL
+
+FrancePL$years <- as.integer(BrazilPL$years)
+FrancePL$France_PL_Production <- as.double(FrancePL$France_PL_Production)
+FrancePL$France_PL_Emissions <- as.double(FrancePL$France_PL_Emissions)
+```
+
+```{r}
+#mapping
+
+#total_emissions<-ggplot()+
+  #geom_smooth(data=CanadaPL, aes(x=years, y=Canada_PL_Emissions,color="Purple"))+
+ # geom_smooth(data=USAPL, aes(x=years, y=Canada_PL_Emissions, color="Yellow"))+
+  #geom_smooth(data=ChinaPL, aes(x=years, y=Canada_PL_Emissions, color="Red"))+
+  #geom_smooth(data=BrazilPL, aes(x=years, y=Canada_PL_Emissions, color="Green"))+
+  #geom_smooth(data=FrancePL, aes(x=years, y=Canada_PL_Emissions, color="Blue"))+
+  #geom_smooth(data=GermanyPL, aes(x=years, y=Canada_PL_Emissions, color="Black"))+
+  #ggtitle("Total Emissions by Country")
+#print(total_emissions+labs(x="Years", y="Total (MM tones CO2)"))
+```
+
+
+
+## Discussion
+
+We have used the following online article to help us discuss its relevance with the analysis of the data above: <https://www.biologicaldiversity.org/programs/population_and_sustainability/climate/>. It states that extreme heat and other effects of rising greenhouse gas emissions are harmful to people. Climate change is worsening a wide range of health outcomes like heat-related illness, vector-borne diseases, asthma, allergies, malnutrition and mental health. It also states that most of the warming of the past 50 years is attributable to human activities, particularly greenhouse gas emissions from high-income countries, and has identified population growth as an immediate driver of emissions. Because population pressure increases emissions through the burning of fossil fuels, increased material extraction, deforestation, industrial agriculture, and other manufacturing processes. This directly correlates to the interpretations discussed above about China and USA being one of the leading countries in the generation of electricity and the production of coal, since China has the largest population in the world and both the USA and China have had exponential growth of industrialization compared to the other chosen countries.
+
+In the article it is also discussing the effect of Sea-level rise. It states that sea levels worldwide are rising at increasing rates as temperatures warm due to climate change. Rising seas and increasingly dangerous storm surges threaten to submerge and erode their habitat and make the groundwater more saline, killing coastal plant communities and ruining drinking water. This directly correlates to the Sea Ice data interpretations shown above, where we can see an increase in the melting of Sea Ice.
+
+## Conclusion
+
+In terms of potential effects, the changing climate situation can have a range of impacts on both the natural world and human society. For example, rising global temperatures can lead to more frequent and intense heatwaves, droughts, and other extreme weather events. This can have serious consequences for agriculture, leading to reduced crop yields and food insecurity. It can also have negative impacts on human health, such as increased rates of heat-related illness and death.
+
+From our plots and statistics, we have concluded that China is the world's largest emitter of greenhouse gases, primarily due to its heavy reliance on coal-fired power plants for electricity. These power plants release large amounts of carbon dioxide and other pollutants into the atmosphere, contributing to global warming and climate change. In recent years, China has taken steps to reduce its carbon emissions and transition to cleaner sources of energy. However, it is still one of the largest contributors to climate change, and its actions will be crucial in addressing this global challenge.
+
+Overall, the current climate situation is a complex issue with many interconnected factors and potential effects. Reducing greenhouse gas emissions, protecting forests and other natural habitats, and taking other steps to mitigate climate change are essential to addressing this global challenge.
